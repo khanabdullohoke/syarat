@@ -4,419 +4,357 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SMKS Ciledug Al Musaddadiyah — Informasi Penerimaan Siswa Baru</title>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <meta name="description" content="Informasi Penerimaan Siswa Baru SMKS Ciledug Al-Musaddadiyah Garut TP 2026/2027"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;0,900;1,900&family=DM+Sans:wght@400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --green-deep:    #1a56b0;
-      --green-mid:     #2169d4;
-      --green-light:   #4a8de8;
-      --green-pale:    #e8f1fc;
-      --gold:          #f5c518;
-      --gold-light:    #fde97a;
-      --white:         #ffffff;
-      --off-white:     #f0f5fc;
-      --text:          #0d2a5e;
-      --text-muted:    #3a6096;
-      --border:        #aecbf0;
+      --blue-deep:   #0b3d91;
+      --blue-mid:    #1565c0;
+      --blue-bright: #1e88e5;
+      --blue-light:  #42a5f5;
+      --blue-pale:   #e3f2fd;
+      --sky:         #bbdefb;
+      --cream:       #f5f9ff;
+      --white:       #ffffff;
+      --text-dark:   #0d1b3e;
+      --text-mid:    #2c4a7c;
+      --text-muted:  #607d9e;
+      --gold:        #ffb300;
+      --gold-light:  #ffd54f;
+      --red:         #e53935;
+      --border:      #c5daf5;
+      --shadow:      0 4px 24px rgba(21,101,192,.12);
+      --shadow-lg:   0 12px 48px rgba(21,101,192,.18);
+      --radius:      16px;
+      --radius-sm:   10px;
+      --tr:          .2s cubic-bezier(.4,0,.2,1);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--off-white);
-      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
       overflow-x: hidden;
+      line-height: 1.6;
     }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.15; }
+    a { text-decoration: none; color: inherit; }
 
     /* ── HEADER ── */
     header {
-      background: linear-gradient(135deg, #1a56b0 0%, #1f62cc 50%, #2d7ae0 100%);
+      background: linear-gradient(140deg,#061e5c 0%,#0b3d91 40%,#1565c0 72%,#1e88e5 100%);
       position: relative;
       overflow: hidden;
-      padding: 0;
     }
-
     header::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(245,197,24,.15) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(255,255,255,.1) 0%, transparent 50%);
-      pointer-events: none;
+      content:'';position:absolute;inset:0;
+      background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
+      background-size:30px 30px;pointer-events:none;
     }
-
-    /* Islamic geometric pattern overlay */
     header::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(255,255,255,.025) 18px, rgba(255,255,255,.025) 19px),
-        repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(255,255,255,.025) 18px, rgba(255,255,255,.025) 19px);
-      pointer-events: none;
+      content:'';position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 20%,rgba(255,179,0,.12) 0%,transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%,rgba(255,255,255,.07) 0%,transparent 50%);
+      pointer-events:none;
     }
 
     .header-inner {
       position: relative;
       z-index: 2;
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 48px 32px 40px;
+      padding: 52px 32px 44px;
       text-align: center;
     }
 
+    /* ── LOGO FIX: tampil penuh tanpa terpotong ── */
     .school-emblem {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 20px;
-      background: transparent;
-      border-radius: 50%;
+      /* Wrapper TIDAK memotong logo — hanya memberi glow ring */
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 0 4px rgba(245,197,24,.35), 0 8px 30px rgba(0,0,0,.5);
+      /* ring efek emas di luar, pakai outline/drop-shadow, BUKAN overflow:hidden */
+      filter: drop-shadow(0 0 0 4px rgba(255,179,0,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.5));
       animation: emblemPop .7s cubic-bezier(.34,1.56,.64,1) both;
-      overflow: hidden;
+    }
+    .school-emblem img {
+      /* gambar tampil 100% natural, biarkan PNG transparan terlihat utuh */
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      /* tidak ada border-radius agar bentuk logo asli terjaga */
     }
 
     @keyframes emblemPop {
       from { transform: scale(.5); opacity: 0; }
       to   { transform: scale(1);  opacity: 1; }
     }
-
-    .header-tagline {
-      font-family: 'Amiri', serif;
-      font-size: 15px;
-      color: var(--gold-light);
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-      opacity: .9;
-      animation: fadeUp .6s .1s both;
-    }
-
-    .header-title {
-      font-size: clamp(22px, 4vw, 34px);
-      font-weight: 800;
-      color: var(--white);
-      line-height: 1.2;
-      margin-bottom: 6px;
-      animation: fadeUp .6s .2s both;
-    }
-
-    .header-subtitle {
-      font-size: 14px;
-      color: rgba(255,255,255,.65);
-      font-weight: 300;
-      letter-spacing: .5px;
-      margin-bottom: 24px;
-      animation: fadeUp .6s .3s both;
-    }
-
-    .gold-divider {
-      width: 80px;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 20px;
-      animation: fadeUp .6s .4s both;
-    }
-
-    .header-badges {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      animation: fadeUp .6s .5s both;
-    }
-
-    .badge {
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.2);
-      color: rgba(255,255,255,.9);
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    .header-bismillah {
+      font-family: 'Amiri', serif;
+      font-size: 17px;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      opacity: .92;
+      animation: fadeUp .6s .1s both;
+    }
+    .header-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(22px,4vw,38px);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      animation: fadeUp .6s .2s both;
+    }
+    .header-subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,.65);
+      font-weight: 500;
+      margin-bottom: 22px;
+      animation: fadeUp .6s .3s both;
+    }
+    .gold-divider {
+      width: 80px; height: 3px;
+      background: linear-gradient(90deg,transparent,var(--gold),transparent);
+      margin: 0 auto 20px;
+      animation: fadeUp .6s .4s both;
+    }
+    .header-badges {
+      display: flex; gap: 10px;
+      justify-content: center; flex-wrap: wrap;
+      animation: fadeUp .6s .5s both;
+    }
+    .header-badge {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.9);
+      padding: 5px 14px; border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 600;
+    }
+
     /* ── NAV TABS ── */
     .nav-tabs {
-      background: #1550a8;
-      border-top: 1px solid rgba(255,255,255,.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+      background: rgba(11,61,145,.97);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(66,165,245,.15);
+      position: sticky; top: 0; z-index: 200;
+      box-shadow: 0 4px 20px rgba(11,61,145,.3);
     }
-
     .nav-tabs-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      overflow-x: auto;
-      scrollbar-width: none;
+      max-width: 960px; margin: 0 auto;
+      display: flex; overflow-x: auto; scrollbar-width: none;
     }
-
     .nav-tabs-inner::-webkit-scrollbar { display: none; }
-
     .nav-tab {
-      padding: 14px 22px;
-      color: rgba(255,255,255,.65);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 14px 20px;
+      color: rgba(255,255,255,.6);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600;
       white-space: nowrap;
       border-bottom: 3px solid transparent;
-      transition: all .25s;
+      transition: all var(--tr);
       text-decoration: none;
-      letter-spacing: .3px;
     }
-
     .nav-tab:hover { color: var(--gold-light); }
     .nav-tab.active {
       color: var(--gold);
       border-bottom-color: var(--gold);
-      background: rgba(201,162,39,.08);
+      background: rgba(255,179,0,.07);
     }
 
     /* ── MAIN ── */
-    main {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px 80px;
-    }
+    main { max-width: 960px; margin: 0 auto; padding: 44px 20px 80px; }
 
     /* ── SECTION ── */
-    .section {
-      margin-bottom: 56px;
-      animation: fadeUp .5s both;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
+    .section { margin-bottom: 60px; animation: fadeUp .5s both; }
+    .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 26px; }
     .section-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #2169d4, #1550a8);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(25,80,168,.3);
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg,var(--blue-mid),var(--blue-deep));
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 23px; flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(21,101,192,.3);
     }
-
     .section-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: #1550a8;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 21px; font-weight: 800; color: var(--blue-deep);
     }
-
     .section-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; color: var(--text-muted); margin-top: 3px;
     }
 
     /* ── CARD ── */
     .card {
       background: var(--white);
-      border-radius: 16px;
+      border-radius: var(--radius);
       border: 1px solid var(--border);
       overflow: hidden;
-      box-shadow: 0 2px 12px rgba(25,80,168,.08);
+      box-shadow: var(--shadow);
     }
-
     .card-header-bar {
-      background: linear-gradient(90deg, #1550a8, #2169d4);
-      padding: 12px 20px;
-      color: var(--white);
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      background: linear-gradient(90deg,var(--blue-deep),var(--blue-mid));
+      padding: 13px 22px; color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
     }
-
-    /* ── REQUIREMENT LIST ── */
-    .req-list {
-      padding: 4px 0;
-    }
-
-    .req-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--green-pale);
-      transition: background .2s;
-    }
-
-    .req-item:last-child { border-bottom: none; }
-    .req-item:hover { background: var(--green-pale); }
-
-    .req-num {
-      width: 26px;
-      height: 26px;
-      background: #2169d4;
-      color: var(--white);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .req-text { font-size: 14px; line-height: 1.6; color: var(--text); }
-    .req-note { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
-
-    /* ── RULE LIST ── */
-    .rule-group { margin-bottom: 4px; }
-
-    .rule-group-title {
-      background: var(--green-pale);
-      border-left: 4px solid var(--green-mid);
-      padding: 10px 20px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #1550a8;
-      letter-spacing: .3px;
-    }
-
-    .rule-item {
-      display: flex;
-      gap: 12px;
-      padding: 11px 20px;
-      border-bottom: 1px solid #eef4f0;
-      font-size: 13.5px;
-      line-height: 1.55;
-      transition: background .2s;
-    }
-
-    .rule-item:hover { background: #f0f3fb; }
-    .rule-item:last-child { border-bottom: none; }
-
-    .rule-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--green-light);
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 7px;
-    }
-
-    .rule-dot.red { background: #e53e3e; }
-    .rule-dot.gold { background: var(--gold); }
 
     /* ── INFO GRID ── */
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
       gap: 16px;
     }
-
     .info-card {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(25,80,168,.08);
-      transition: transform .2s, box-shadow .2s;
+      border-radius: var(--radius);
+      padding: 22px 18px; text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform var(--tr), box-shadow var(--tr);
     }
-
-    .info-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(25,80,168,.18);
-    }
-
+    .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
     .info-card-icon { font-size: 30px; margin-bottom: 10px; }
-    .info-card-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
-    .info-card-value { font-size: 16px; font-weight: 800; color: var(--green-deep); margin-top: 4px; }
-    .info-card-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .info-card-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10.5px; color: var(--text-muted); font-weight: 600;
+      text-transform: uppercase; letter-spacing: .8px;
+    }
+    .info-card-value {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 17px; font-weight: 800; color: var(--blue-deep); margin-top: 5px;
+    }
+    .info-card-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; color: var(--text-muted); margin-top: 3px;
+    }
 
-    /* ── ALERT BOX ── */
+    /* ── REQ LIST ── */
+    .req-list { padding: 4px 0; }
+    .req-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--blue-pale);
+      transition: background var(--tr);
+    }
+    .req-item:last-child { border-bottom: none; }
+    .req-item:hover { background: var(--blue-pale); }
+    .req-num {
+      width: 28px; height: 28px;
+      background: var(--blue-mid); color: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+    }
+    .req-text { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; color: var(--text-dark); }
+    .req-note { font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+    /* ── RULE LIST ── */
+    .rule-group { margin-bottom: 4px; }
+    .rule-group-title {
+      background: var(--blue-pale);
+      border-left: 4px solid var(--blue-mid);
+      padding: 11px 22px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--blue-deep); letter-spacing: .2px;
+    }
+    .rule-item {
+      display: flex; gap: 12px;
+      padding: 12px 22px;
+      border-bottom: 1px solid #e8f0fa;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px; line-height: 1.6;
+      transition: background var(--tr);
+    }
+    .rule-item:hover { background: var(--blue-pale); }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-dot {
+      width: 8px; height: 8px;
+      background: var(--blue-light);
+      border-radius: 50%; flex-shrink: 0; margin-top: 8px;
+    }
+    .rule-dot.red  { background: var(--red); }
+    .rule-dot.gold { background: var(--gold); }
+
+    /* ── ALERT ── */
     .alert {
-      border-radius: 12px;
+      border-radius: var(--radius-sm);
       padding: 16px 20px;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
+      display: flex; gap: 12px; align-items: flex-start;
       margin-top: 16px;
     }
-
-    .alert-warning {
-      background: #fffbea;
-      border: 1px solid #f6d860;
-    }
-
-    .alert-info {
-      background: var(--green-pale);
-      border: 1px solid var(--border);
-    }
-
-    .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-    .alert-text { font-size: 13px; line-height: 1.6; color: var(--text); }
-    .alert-text strong { color: var(--green-deep); }
+    .alert-warning { background: #fffbea; border: 1px solid #f6d860; }
+    .alert-info    { background: var(--blue-pale); border: 1px solid var(--border); }
+    .alert-icon    { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .alert-text    { font-family: 'DM Sans', sans-serif; font-size: 13px; line-height: 1.6; color: var(--text-dark); }
+    .alert-text strong { color: var(--blue-deep); font-family: 'Plus Jakarta Sans', sans-serif; }
 
     /* ── STEPS ── */
-    .steps { display: flex; flex-direction: column; gap: 0; }
-
+    .steps { display: flex; flex-direction: column; }
     .step {
-      display: flex;
-      gap: 16px;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--green-pale);
+      display: flex; gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--blue-pale);
     }
-
     .step:last-child { border-bottom: none; }
-
     .step-num {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, #2169d4, #1550a8);
-      color: var(--white);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 800;
-      flex-shrink: 0;
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg,var(--blue-mid),var(--blue-deep));
+      color: var(--white); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px; font-weight: 900; flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(21,101,192,.3);
     }
-
-    .step-content { flex: 1; }
-    .step-title { font-size: 14px; font-weight: 700; color: #1550a8; margin-bottom: 3px; }
-    .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+    .step-content { flex: 1; padding-top: 6px; }
+    .step-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--blue-deep); margin-bottom: 4px;
+    }
+    .step-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    }
 
     /* ── FOOTER ── */
     footer {
-      background: #1550a8;
+      background: linear-gradient(135deg,#061e5c,#0b3d91);
       color: rgba(255,255,255,.75);
       text-align: center;
-      padding: 28px 20px;
-      font-size: 13px;
-      line-height: 1.8;
+      padding: 36px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; line-height: 1.9;
+      border-top: 1px solid rgba(66,165,245,.2);
     }
-
-    footer strong { color: var(--gold); }
+    footer .footer-ayat {
+      font-family: 'Amiri', serif;
+      font-size: 20px; color: var(--gold-light); margin-bottom: 6px;
+    }
+    footer .footer-terjemah {
+      font-size: 12px; color: rgba(255,255,255,.45);
+      margin-bottom: 16px; font-style: italic;
+    }
+    footer strong { color: var(--gold); font-family: 'Plus Jakarta Sans', sans-serif; }
 
     /* ── PRINT ── */
     @media print {
@@ -426,9 +364,11 @@
       main { padding: 20px; }
     }
 
-    @media (max-width: 600px) {
-      .header-inner { padding: 36px 20px 30px; }
+    @media (max-width: 640px) {
+      .header-inner { padding: 38px 20px 32px; }
       .info-grid { grid-template-columns: 1fr 1fr; }
+      .section-title { font-size: 18px; }
+      .school-emblem, .school-emblem img { width: 100px; height: 100px; }
     }
   </style>
 </head>
@@ -437,14 +377,23 @@
 <!-- ══════════ HEADER ══════════ -->
 <header>
   <div class="header-inner">
-<div class="school-emblem"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiD-8YPFS6i86EyZZNDUhwuam5ro_mtc9So2muvB7EDWz1Zp6rarLubvVS3vfVVoto_S6SaHlIPPnmNaddUugGUztWkJYhDwwT8CU1BcUuq9TNyxnHKa6B44iDBx6LjR1-z3r7_C34jviaWeOYgk4bNJHsziPV4KR5mQjY69HVhyphenhyphenR3STD4xp-b46x_HeR4/s320/An8Em6pLCtVUNFZTK-rgdQG9pKiDxE1AR7m_1QO_5slD3C5qFXYq7S9suI1ztpViB_aUnbOGE2-Y71AU9SF3GjQzZ09xbw5aat-JT_7ptJ4VcfdGeJ73DWbHD9IDtVHa_16MjCj09HJ4eGBvZMo-removebg-preview.png"></div>    <div class="header-tagline">بسم الله الرحمن الرحيم</div>
+
+    <!-- Logo: wrapper tanpa overflow:hidden agar logo PNG tidak terpotong -->
+    <div class="school-emblem">
+      <img
+        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiD-8YPFS6i86EyZZNDUhwuam5ro_mtc9So2muvB7EDWz1Zp6rarLubvVS3vfVVoto_S6SaHlIPPnmNaddUugGUztWkJYhDwwT8CU1BcUuq9TNyxnHKa6B44iDBx6LjR1-z3r7_C34jviaWeOYgk4bNJHsziPV4KR5mQjY69HVhyphenhyphenR3STD4xp-b46x_HeR4/s320/An8Em6pLCtVUNFZTK-rgdQG9pKiDxE1AR7m_1QO_5slD3C5qFXYq7S9suI1ztpViB_aUnbOGE2-Y71AU9SF3GjQzZ09xbw5aat-JT_7ptJ4VcfdGeJ73DWbHD9IDtVHa_16MjCj09HJ4eGBvZMo-removebg-preview.png"
+        alt="Logo SMKS Ciledug Al Musaddadiyah"
+      />
+    </div>
+
+    <div class="header-bismillah">بسم الله الرحمن الرحيم</div>
     <h1 class="header-title">SMKS Ciledug Al Musaddadiyah</h1>
-    <p class="header-subtitle">Jl. Mayor Syamsu No. 02 Jayaraga Tarogong Kidul — Terakreditasi A</p>
+    <p class="header-subtitle">Jl. Mayor Syamsu No. 02 Jayaraga, Tarogong Kidul, Garut — Terakreditasi A</p>
     <div class="gold-divider"></div>
     <div class="header-badges">
-      <span class="badge">🎓 Penerimaan Siswa Baru</span>
-      <span class="badge">📋 Persyaratan & Tata Tertib</span>
-      <span class="badge">☪️ Berbasis Pesantren</span>
+      <span class="header-badge">🎓 Penerimaan Siswa Baru</span>
+      <span class="header-badge">📋 Persyaratan &amp; Tata Tertib</span>
+      <span class="header-badge">☪️ Berbasis Pesantren</span>
     </div>
   </div>
 </header>
@@ -452,11 +401,11 @@
 <!-- ══════════ NAV TABS ══════════ -->
 <nav class="nav-tabs">
   <div class="nav-tabs-inner">
-    <a href="#info" class="nav-tab active">📌 Info Umum</a>
+    <a href="#info"        class="nav-tab active">📌 Info Umum</a>
     <a href="#persyaratan" class="nav-tab">📄 Persyaratan</a>
-    <a href="#alur" class="nav-tab">🔄 Alur Daftar</a>
-    <a href="#tatatertib" class="nav-tab">📜 Tata Tertib</a>
-    <a href="#sanksi" class="nav-tab">⚠️ Sanksi</a>
+    <a href="#alur"        class="nav-tab">🔄 Alur Daftar</a>
+    <a href="#tatatertib"  class="nav-tab">📜 Tata Tertib</a>
+    <a href="#sanksi"      class="nav-tab">⚠️ Sanksi</a>
   </div>
 </nav>
 
@@ -469,7 +418,7 @@
       <div class="section-icon">📌</div>
       <div>
         <div class="section-title">Informasi Umum PSB</div>
-        <div class="section-desc">Penerimaan Siswa Baru Tahun Pelajaran 2025/2026</div>
+        <div class="section-desc">Penerimaan Siswa Baru Tahun Pelajaran 2026/2027</div>
       </div>
     </div>
     <div class="info-grid">
@@ -502,7 +451,7 @@
       <div class="alert-icon">🏫</div>
       <div class="alert-text">
         <strong>Program Keahlian Tersedia:</strong><br>
-        Teknik Komputer & Jaringan (TKJ) · Akuntansi & Keuangan Lembaga (AKL) · Otomatisasi Tata Kelola Perkantoran (OTKP) · Bisnis Daring & Pemasaran (BDP)
+        Teknik Komputer &amp; Jaringan (TKJ) · Akuntansi &amp; Keuangan Lembaga (AKL) · Otomatisasi Tata Kelola Perkantoran (OTKP) · Bisnis Daring &amp; Pemasaran (BDP)
       </div>
     </div>
   </section>
@@ -516,7 +465,6 @@
         <div class="section-desc">Dokumen wajib dilengkapi sebelum mendaftar</div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-header-bar">📋 Berkas Administrasi yang Harus Diserahkan</div>
       <div class="req-list">
@@ -592,7 +540,6 @@
         </div>
       </div>
     </div>
-
     <div class="alert alert-warning">
       <div class="alert-icon">⚠️</div>
       <div class="alert-text">
@@ -615,7 +562,7 @@
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-content">
-            <div class="step-title">Ambil & Isi Formulir</div>
+            <div class="step-title">Ambil &amp; Isi Formulir</div>
             <div class="step-desc">Ambil formulir pendaftaran di Tata Usaha atau unduh di website sekolah. Isi dengan lengkap dan benar menggunakan huruf cetak.</div>
           </div>
         </div>
@@ -629,14 +576,14 @@
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-content">
-            <div class="step-title">Serahkan Berkas & Bayar Biaya Pendaftaran</div>
+            <div class="step-title">Serahkan Berkas &amp; Bayar Biaya Pendaftaran</div>
             <div class="step-desc">Serahkan berkas ke loket Tata Usaha dan lakukan pembayaran biaya pendaftaran. Simpan bukti pembayaran.</div>
           </div>
         </div>
         <div class="step">
           <div class="step-num">4</div>
           <div class="step-content">
-            <div class="step-title">Seleksi Administrasi & Tes</div>
+            <div class="step-title">Seleksi Administrasi &amp; Tes</div>
             <div class="step-desc">Calon siswa akan mengikuti tes tertulis (Matematika, Bahasa Indonesia, Ilmu Pengetahuan Umum) dan wawancara. Bagi yang beragama Islam, ada tes membaca Al-Qur'an.</div>
           </div>
         </div>
@@ -650,7 +597,7 @@
         <div class="step">
           <div class="step-num">6</div>
           <div class="step-content">
-            <div class="step-title">Daftar Ulang & Orientasi</div>
+            <div class="step-title">Daftar Ulang &amp; Orientasi</div>
             <div class="step-desc">Selesaikan administrasi daftar ulang sesuai jadwal. Wajib mengikuti kegiatan Masa Pengenalan Lingkungan Sekolah (MPLS).</div>
           </div>
         </div>
@@ -668,10 +615,9 @@
       </div>
     </div>
 
-    <!-- Kehadiran -->
     <div class="card" style="margin-bottom:16px;">
       <div class="rule-group">
-        <div class="rule-group-title">⏰ A. Kehadiran & Kedisiplinan Waktu</div>
+        <div class="rule-group-title">⏰ A. Kehadiran &amp; Kedisiplinan Waktu</div>
         <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib hadir di sekolah paling lambat pukul 07.00 WIB. Pintu gerbang ditutup tepat pukul 07.00 WIB.</div></div>
         <div class="rule-item"><div class="rule-dot"></div><div>Keterlambatan lebih dari 15 menit tanpa keterangan yang sah dihitung sebagai alpha (absen tanpa keterangan).</div></div>
         <div class="rule-item"><div class="rule-dot"></div><div>Siswa yang tidak hadir wajib menyerahkan surat izin dari orang tua/wali pada hari berikutnya atau menghubungi pihak sekolah sebelum pukul 08.00 WIB.</div></div>
@@ -681,10 +627,9 @@
       </div>
     </div>
 
-    <!-- Seragam -->
     <div class="card" style="margin-bottom:16px;">
       <div class="rule-group">
-        <div class="rule-group-title">👔 B. Pakaian & Penampilan</div>
+        <div class="rule-group-title">👔 B. Pakaian &amp; Penampilan</div>
         <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengenakan seragam sekolah sesuai ketentuan: Senin–Selasa seragam putih abu-abu, Rabu–Kamis seragam batik sekolah, Jumat seragam pramuka/muslim, Sabtu seragam olahraga/praktek.</div></div>
         <div class="rule-item"><div class="rule-dot"></div><div>Seragam harus bersih, rapi, tidak kusut, dan dikenakan sebagaimana mestinya (baju dimasukkan ke dalam celana/rok).</div></div>
         <div class="rule-item"><div class="rule-dot red"></div><div>Siswi wajib mengenakan jilbab/kerudung yang menutup dada selama berada di lingkungan sekolah.</div></div>
@@ -695,10 +640,9 @@
       </div>
     </div>
 
-    <!-- Perilaku -->
     <div class="card" style="margin-bottom:16px;">
       <div class="rule-group">
-        <div class="rule-group-title">🤝 C. Perilaku & Etika</div>
+        <div class="rule-group-title">🤝 C. Perilaku &amp; Etika</div>
         <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib bersikap sopan, hormat, dan santun kepada seluruh warga sekolah: guru, karyawan, dan sesama siswa.</div></div>
         <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengucapkan salam ketika bertemu guru atau memasuki ruangan.</div></div>
         <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengikuti kegiatan shalat berjamaah Dzuhur dan Ashar yang diselenggarakan sekolah.</div></div>
@@ -710,7 +654,6 @@
       </div>
     </div>
 
-    <!-- Proses Belajar -->
     <div class="card" style="margin-bottom:16px;">
       <div class="rule-group">
         <div class="rule-group-title">📚 D. Kegiatan Belajar Mengajar</div>
@@ -723,7 +666,6 @@
       </div>
     </div>
 
-    <!-- Fasilitas -->
     <div class="card" style="margin-bottom:16px;">
       <div class="rule-group">
         <div class="rule-group-title">🏛️ E. Penggunaan Fasilitas Sekolah</div>
@@ -734,10 +676,9 @@
       </div>
     </div>
 
-    <!-- Ekstrakurikuler -->
     <div class="card">
       <div class="rule-group">
-        <div class="rule-group-title">🎯 F. Kegiatan Ekstrakurikuler & Organisasi</div>
+        <div class="rule-group-title">🎯 F. Kegiatan Ekstrakurikuler &amp; Organisasi</div>
         <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa wajib mengikuti minimal satu kegiatan ekstrakurikuler yang tersedia di sekolah.</div></div>
         <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa dianjurkan aktif dalam kegiatan OSIS dan organisasi kepemudaan Islam yang diselenggarakan sekolah.</div></div>
         <div class="rule-item"><div class="rule-dot gold"></div><div>Kegiatan ekstrakurikuler atau rapat OSIS yang dilaksanakan di luar jam sekolah wajib mendapat izin dari pihak sekolah dan seizin orang tua.</div></div>
@@ -751,27 +692,27 @@
     <div class="section-header">
       <div class="section-icon">⚠️</div>
       <div>
-        <div class="section-title">Ketentuan Sanksi & Penghargaan</div>
+        <div class="section-title">Ketentuan Sanksi &amp; Penghargaan</div>
         <div class="section-desc">Konsekuensi pelanggaran dan apresiasi prestasi siswa</div>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:16px;">
-      <div class="card-header-bar">📊 Tingkatan Pelanggaran & Sanksi</div>
+      <div class="card-header-bar">📊 Tingkatan Pelanggaran &amp; Sanksi</div>
       <div class="rule-group">
-        <div class="rule-group-title" style="background:#e8f1fc; border-color:#4a8de8;">🟡 Pelanggaran Ringan (Peringatan Lisan / Tertulis)</div>
+        <div class="rule-group-title" style="background:#e3f2fd;border-color:#42a5f5;">🟡 Pelanggaran Ringan (Peringatan Lisan / Tertulis)</div>
         <div class="rule-item"><div class="rule-dot gold"></div><div>Terlambat 1–2 kali dalam sebulan → teguran lisan dan bimbingan guru BK.</div></div>
         <div class="rule-item"><div class="rule-dot gold"></div><div>Tidak mengerjakan tugas 1–2 kali → tugas susulan dan pengurangan nilai.</div></div>
         <div class="rule-item"><div class="rule-dot gold"></div><div>Seragam tidak sesuai ketentuan → penggantian seragam sementara dan surat peringatan.</div></div>
       </div>
       <div class="rule-group">
-        <div class="rule-group-title" style="background:#fff8ee; border-color:#f5a623;">🟠 Pelanggaran Sedang (Pemanggilan Orang Tua)</div>
+        <div class="rule-group-title" style="background:#fff8ee;border-color:#f5a623;">🟠 Pelanggaran Sedang (Pemanggilan Orang Tua)</div>
         <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Terlambat lebih dari 3 kali atau alpha lebih dari 5 hari dalam satu semester → panggilan orang tua dan surat peringatan tertulis.</div></div>
         <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Membawa HP dan menggunakannya saat KBM → HP disita, dikembalikan kepada orang tua, surat peringatan pertama.</div></div>
         <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Menyontek saat ujian → nilai ujian 0, laporan kepada orang tua, dan skorsing 1–3 hari.</div></div>
       </div>
       <div class="rule-group">
-        <div class="rule-group-title" style="background:#fff5f5; border-color:#e53e3e;">🔴 Pelanggaran Berat (Skorsing / Dikeluarkan)</div>
+        <div class="rule-group-title" style="background:#fce4ec;border-color:#e53935;">🔴 Pelanggaran Berat (Skorsing / Dikeluarkan)</div>
         <div class="rule-item"><div class="rule-dot red"></div><div>Melakukan kekerasan/tawuran → skorsing 3–14 hari dan wajib membuat pernyataan tidak mengulangi; jika berulang dikeluarkan dari sekolah.</div></div>
         <div class="rule-item"><div class="rule-dot red"></div><div>Terbukti membawa/mengonsumsi narkoba atau minuman keras → dikeluarkan dari sekolah secara permanen dan dilaporkan kepada pihak berwajib.</div></div>
         <div class="rule-item"><div class="rule-dot red"></div><div>Melakukan tindakan asusila di lingkungan sekolah → dikeluarkan dari sekolah setelah melalui sidang tim disiplin.</div></div>
@@ -780,31 +721,23 @@
     </div>
 
     <div class="card">
-      <div class="card-header-bar" style="background: linear-gradient(90deg, #8a6914, #c9a008);">🏆 Penghargaan Siswa Berprestasi</div>
+      <div class="card-header-bar" style="background:linear-gradient(90deg,#7a5900,#c9a008);">🏆 Penghargaan Siswa Berprestasi</div>
       <div class="req-list">
         <div class="req-item">
-          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
-          <div>
-            <div class="req-text">Siswa dengan nilai akademik terbaik setiap semester mendapatkan piagam penghargaan dan hadiah dari sekolah.</div>
-          </div>
+          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
+          <div><div class="req-text">Siswa dengan nilai akademik terbaik setiap semester mendapatkan piagam penghargaan dan hadiah dari sekolah.</div></div>
         </div>
         <div class="req-item">
-          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
-          <div>
-            <div class="req-text">Siswa yang memenangkan lomba/kompetisi tingkat kabupaten, provinsi, atau nasional mendapatkan penghargaan khusus dan dapat dipertimbangkan untuk beasiswa.</div>
-          </div>
+          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
+          <div><div class="req-text">Siswa yang memenangkan lomba/kompetisi tingkat kabupaten, provinsi, atau nasional mendapatkan penghargaan khusus dan dapat dipertimbangkan untuk beasiswa.</div></div>
         </div>
         <div class="req-item">
-          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
-          <div>
-            <div class="req-text">Siswa dengan kehadiran 100% selama satu semester mendapatkan penghargaan kedisiplinan.</div>
-          </div>
+          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
+          <div><div class="req-text">Siswa dengan kehadiran 100% selama satu semester mendapatkan penghargaan kedisiplinan.</div></div>
         </div>
         <div class="req-item">
-          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
-          <div>
-            <div class="req-text">Siswa yang aktif dalam kegiatan organisasi dan menunjukkan kepemimpinan yang baik mendapatkan sertifikat kepemimpinan.</div>
-          </div>
+          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
+          <div><div class="req-text">Siswa yang aktif dalam kegiatan organisasi dan menunjukkan kepemimpinan yang baik mendapatkan sertifikat kepemimpinan.</div></div>
         </div>
       </div>
     </div>
@@ -821,20 +754,16 @@
 
 <!-- ══════════ FOOTER ══════════ -->
 <footer>
-  <div style="font-family:'Amiri',serif; font-size:18px; color:var(--gold-light); margin-bottom:8px;">
-    وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا
-  </div>
-  <div style="font-size:12px; margin-bottom:12px; color:rgba(255,255,255,.5);">"Barangsiapa bertakwa kepada Allah, niscaya Dia akan membukakan jalan keluar baginya." (QS. At-Talaq: 2)</div>
+  <div class="footer-ayat">وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا</div>
+  <div class="footer-terjemah">"Barangsiapa bertakwa kepada Allah, niscaya Dia akan membukakan jalan keluar baginya." (QS. At-Talaq: 2)</div>
   <strong>SMKS Ciledug Al Musaddadiyah</strong><br>
-  Jl. Mayor Syamsu No. 02 jayaraga Tarogong Kidul, Garut, Jawa Barat<br>
-  <span style="font-size:12px;">Dokumen ini diterbitkan untuk keperluan Penerimaan Siswa Baru — TP 2026/2027</span>
+  Jl. Mayor Syamsu No. 02 Jayaraga, Tarogong Kidul, Garut, Jawa Barat<br>
+  <span style="font-size:11.5px;color:rgba(255,255,255,.4);">Dokumen ini diterbitkan untuk keperluan Penerimaan Siswa Baru — TP 2026/2027</span>
 </footer>
 
 <script>
-  // Active tab highlight on scroll
   const tabs = document.querySelectorAll('.nav-tab');
   const sections = document.querySelectorAll('.section');
-
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -845,7 +774,6 @@
       }
     });
   }, { rootMargin: '-40% 0px -55% 0px' });
-
   sections.forEach(s => observer.observe(s));
 </script>
 
