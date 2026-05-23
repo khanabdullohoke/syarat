@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SMKS Ciledug Al Musaddadiyah — Informasi Penerimaan Siswa Baru</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green-deep:    #0e1f4a;
+      --green-mid:     #1a3380;
+      --green-light:   #2b4fc4;
+      --green-pale:    #eaeefc;
+      --gold:          #f5c518;
+      --gold-light:    #fde97a;
+      --white:         #ffffff;
+      --off-white:     #f4f6fb;
+      --text:          #0e1a38;
+      --text-muted:    #4a5a80;
+      --border:        #c0ccee;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #0a1740 0%, #0e1f4a 50%, #1a2e6a 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(245,197,24,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(43,79,196,.2) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Islamic geometric pattern overlay */
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(255,255,255,.025) 18px, rgba(255,255,255,.025) 19px),
+        repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(255,255,255,.025) 18px, rgba(255,255,255,.025) 19px);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 32px 40px;
+      text-align: center;
+    }
+
+    .school-emblem {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 20px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Amiri', serif;
+      font-size: 36px;
+      color: var(--green-deep);
+      font-weight: 700;
+      box-shadow: 0 0 0 6px rgba(201,162,39,.25), 0 8px 30px rgba(0,0,0,.4);
+      animation: emblemPop .7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    @keyframes emblemPop {
+      from { transform: scale(.5); opacity: 0; }
+      to   { transform: scale(1);  opacity: 1; }
+    }
+
+    .header-tagline {
+      font-family: 'Amiri', serif;
+      font-size: 15px;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      opacity: .9;
+      animation: fadeUp .6s .1s both;
+    }
+
+    .header-title {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 6px;
+      animation: fadeUp .6s .2s both;
+    }
+
+    .header-subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,.65);
+      font-weight: 300;
+      letter-spacing: .5px;
+      margin-bottom: 24px;
+      animation: fadeUp .6s .3s both;
+    }
+
+    .gold-divider {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 20px;
+      animation: fadeUp .6s .4s both;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp .6s .5s both;
+    }
+
+    .badge {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.9);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── NAV TABS ── */
+    .nav-tabs {
+      background: var(--green-deep);
+      border-top: 1px solid rgba(255,255,255,.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+
+    .nav-tabs-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-tabs-inner::-webkit-scrollbar { display: none; }
+
+    .nav-tab {
+      padding: 14px 22px;
+      color: rgba(255,255,255,.65);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      transition: all .25s;
+      text-decoration: none;
+      letter-spacing: .3px;
+    }
+
+    .nav-tab:hover { color: var(--gold-light); }
+    .nav-tab.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+      background: rgba(201,162,39,.08);
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 56px;
+      animation: fadeUp .5s both;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .section-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(13,74,43,.3);
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--green-deep);
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(13,74,43,.06);
+    }
+
+    .card-header-bar {
+      background: linear-gradient(90deg, var(--green-deep), var(--green-mid));
+      padding: 12px 20px;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── REQUIREMENT LIST ── */
+    .req-list {
+      padding: 4px 0;
+    }
+
+    .req-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--green-pale);
+      transition: background .2s;
+    }
+
+    .req-item:last-child { border-bottom: none; }
+    .req-item:hover { background: var(--green-pale); }
+
+    .req-num {
+      width: 26px;
+      height: 26px;
+      background: var(--green-mid);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .req-text { font-size: 14px; line-height: 1.6; color: var(--text); }
+    .req-note { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+    /* ── RULE LIST ── */
+    .rule-group { margin-bottom: 4px; }
+
+    .rule-group-title {
+      background: var(--green-pale);
+      border-left: 4px solid var(--green-mid);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green-deep);
+      letter-spacing: .3px;
+    }
+
+    .rule-item {
+      display: flex;
+      gap: 12px;
+      padding: 11px 20px;
+      border-bottom: 1px solid #eef4f0;
+      font-size: 13.5px;
+      line-height: 1.55;
+      transition: background .2s;
+    }
+
+    .rule-item:hover { background: #f0f3fb; }
+    .rule-item:last-child { border-bottom: none; }
+
+    .rule-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green-light);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .rule-dot.red { background: #e53e3e; }
+    .rule-dot.gold { background: var(--gold); }
+
+    /* ── INFO GRID ── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .info-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(13,74,43,.06);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .info-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(13,74,43,.12);
+    }
+
+    .info-card-icon { font-size: 30px; margin-bottom: 10px; }
+    .info-card-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
+    .info-card-value { font-size: 16px; font-weight: 800; color: var(--green-deep); margin-top: 4px; }
+    .info-card-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── ALERT BOX ── */
+    .alert {
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-top: 16px;
+    }
+
+    .alert-warning {
+      background: #fffbea;
+      border: 1px solid #f6d860;
+    }
+
+    .alert-info {
+      background: var(--green-pale);
+      border: 1px solid var(--border);
+    }
+
+    .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .alert-text { font-size: 13px; line-height: 1.6; color: var(--text); }
+    .alert-text strong { color: var(--green-deep); }
+
+    /* ── STEPS ── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--green-pale);
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .step-content { flex: 1; }
+    .step-title { font-size: 14px; font-weight: 700; color: var(--green-deep); margin-bottom: 3px; }
+    .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0a1740;
+      color: rgba(255,255,255,.75);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    footer strong { color: var(--gold); }
+
+    /* ── PRINT ── */
+    @media print {
+      .nav-tabs, footer { display: none; }
+      header { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .card { break-inside: avoid; }
+      main { padding: 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .header-inner { padding: 36px 20px 30px; }
+      .info-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="header-inner">
+    <div class="school-emblem">م</div>
+    <div class="header-tagline">بسم الله الرحمن الرحيم</div>
+    <h1 class="header-title">SMKS Ciledug Al Musaddadiyah</h1>
+    <p class="header-subtitle">Jl. Mayor Abdurachman No. 271, Sumedang — Terakreditasi</p>
+    <div class="gold-divider"></div>
+    <div class="header-badges">
+      <span class="badge">🎓 Penerimaan Siswa Baru</span>
+      <span class="badge">📋 Persyaratan & Tata Tertib</span>
+      <span class="badge">☪️ Berbasis Pesantren</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ NAV TABS ══════════ -->
+<nav class="nav-tabs">
+  <div class="nav-tabs-inner">
+    <a href="#info" class="nav-tab active">📌 Info Umum</a>
+    <a href="#persyaratan" class="nav-tab">📄 Persyaratan</a>
+    <a href="#alur" class="nav-tab">🔄 Alur Daftar</a>
+    <a href="#tatatertib" class="nav-tab">📜 Tata Tertib</a>
+    <a href="#sanksi" class="nav-tab">⚠️ Sanksi</a>
+  </div>
+</nav>
+
+<!-- ══════════ MAIN ══════════ -->
+<main>
+
+  <!-- INFO UMUM -->
+  <section class="section" id="info">
+    <div class="section-header">
+      <div class="section-icon">📌</div>
+      <div>
+        <div class="section-title">Informasi Umum PSB</div>
+        <div class="section-desc">Penerimaan Siswa Baru Tahun Pelajaran 2025/2026</div>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📅</div>
+        <div class="info-card-label">Pendaftaran</div>
+        <div class="info-card-value">Juni – Juli</div>
+        <div class="info-card-sub">Setiap hari kerja</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🕐</div>
+        <div class="info-card-label">Jam Layanan</div>
+        <div class="info-card-value">08.00 – 14.00</div>
+        <div class="info-card-sub">Senin – Sabtu (WIB)</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">💰</div>
+        <div class="info-card-label">Biaya Pendaftaran</div>
+        <div class="info-card-value">Rp 150.000</div>
+        <div class="info-card-sub">Tidak dapat dikembalikan</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📞</div>
+        <div class="info-card-label">Kontak</div>
+        <div class="info-card-value">0261-XXXXXX</div>
+        <div class="info-card-sub">Tata Usaha Sekolah</div>
+      </div>
+    </div>
+    <div class="alert alert-info" style="margin-top:20px;">
+      <div class="alert-icon">🏫</div>
+      <div class="alert-text">
+        <strong>Program Keahlian Tersedia:</strong><br>
+        Teknik Komputer & Jaringan (TKJ) · Akuntansi & Keuangan Lembaga (AKL) · Otomatisasi Tata Kelola Perkantoran (OTKP) · Bisnis Daring & Pemasaran (BDP)
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSYARATAN -->
+  <section class="section" id="persyaratan">
+    <div class="section-header">
+      <div class="section-icon">📄</div>
+      <div>
+        <div class="section-title">Persyaratan Pendaftaran</div>
+        <div class="section-desc">Dokumen wajib dilengkapi sebelum mendaftar</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header-bar">📋 Berkas Administrasi yang Harus Diserahkan</div>
+      <div class="req-list">
+        <div class="req-item">
+          <div class="req-num">1</div>
+          <div>
+            <div class="req-text">Fotokopi Ijazah / Surat Keterangan Lulus (SKL) SMP/MTs atau sederajat</div>
+            <div class="req-note">Legalisir oleh kepala sekolah asal — 2 lembar</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">2</div>
+          <div>
+            <div class="req-text">Fotokopi Rapor SMP/MTs kelas 7, 8, dan semester 1 kelas 9</div>
+            <div class="req-note">Semua halaman, legalisir kepala sekolah — 1 rangkap</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">3</div>
+          <div>
+            <div class="req-text">Fotokopi Kartu Keluarga (KK)</div>
+            <div class="req-note">2 lembar</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">4</div>
+          <div>
+            <div class="req-text">Fotokopi Akta Kelahiran</div>
+            <div class="req-note">2 lembar</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">5</div>
+          <div>
+            <div class="req-text">Pas foto terbaru berwarna berlatar belakang merah</div>
+            <div class="req-note">Ukuran 3×4 sebanyak 6 lembar; mengenakan seragam SMP/sederajat</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">6</div>
+          <div>
+            <div class="req-text">Surat Keterangan Sehat dari dokter atau Puskesmas</div>
+            <div class="req-note">Tidak buta warna (khusus program TKJ), bebas narkoba</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">7</div>
+          <div>
+            <div class="req-text">Surat Keterangan Berkelakuan Baik dari kepala sekolah asal</div>
+            <div class="req-note">Asli, bermaterai Rp 10.000</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">8</div>
+          <div>
+            <div class="req-text">Fotokopi KTP orang tua / wali</div>
+            <div class="req-note">2 lembar</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">9</div>
+          <div>
+            <div class="req-text">Surat pernyataan orang tua/wali sanggup menaati tata tertib sekolah</div>
+            <div class="req-note">Bermaterai Rp 10.000, ditandatangani calon siswa dan orang tua/wali</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num">10</div>
+          <div>
+            <div class="req-text">Formulir pendaftaran yang telah diisi lengkap</div>
+            <div class="req-note">Tersedia di Tata Usaha atau dapat diunduh di website sekolah</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-warning">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text">
+        <strong>Persyaratan Khusus:</strong> Calon siswa berusia maksimal 21 tahun pada saat awal tahun pelajaran. Calon siswa bersedia mengikuti kegiatan pesantren dan keagamaan yang diselenggarakan oleh sekolah.
+      </div>
+    </div>
+  </section>
+
+  <!-- ALUR PENDAFTARAN -->
+  <section class="section" id="alur">
+    <div class="section-header">
+      <div class="section-icon">🔄</div>
+      <div>
+        <div class="section-title">Alur Pendaftaran</div>
+        <div class="section-desc">Ikuti langkah berikut secara berurutan</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Ambil & Isi Formulir</div>
+            <div class="step-desc">Ambil formulir pendaftaran di Tata Usaha atau unduh di website sekolah. Isi dengan lengkap dan benar menggunakan huruf cetak.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Lengkapi Berkas</div>
+            <div class="step-desc">Siapkan semua dokumen persyaratan, susun dalam map berwarna hijau, dan beri label nama calon siswa.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Serahkan Berkas & Bayar Biaya Pendaftaran</div>
+            <div class="step-desc">Serahkan berkas ke loket Tata Usaha dan lakukan pembayaran biaya pendaftaran. Simpan bukti pembayaran.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Seleksi Administrasi & Tes</div>
+            <div class="step-desc">Calon siswa akan mengikuti tes tertulis (Matematika, Bahasa Indonesia, Ilmu Pengetahuan Umum) dan wawancara. Bagi yang beragama Islam, ada tes membaca Al-Qur'an.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Pengumuman Hasil Seleksi</div>
+            <div class="step-desc">Hasil seleksi diumumkan melalui papan pengumuman sekolah dan website resmi. Calon siswa yang diterima wajib melakukan daftar ulang.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <div class="step-title">Daftar Ulang & Orientasi</div>
+            <div class="step-desc">Selesaikan administrasi daftar ulang sesuai jadwal. Wajib mengikuti kegiatan Masa Pengenalan Lingkungan Sekolah (MPLS).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TATA TERTIB -->
+  <section class="section" id="tatatertib">
+    <div class="section-header">
+      <div class="section-icon">📜</div>
+      <div>
+        <div class="section-title">Tata Tertib Siswa</div>
+        <div class="section-desc">Berlaku selama menjadi siswa SMKS Ciledug Al Musaddadiyah</div>
+      </div>
+    </div>
+
+    <!-- Kehadiran -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="rule-group">
+        <div class="rule-group-title">⏰ A. Kehadiran & Kedisiplinan Waktu</div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib hadir di sekolah paling lambat pukul 07.00 WIB. Pintu gerbang ditutup tepat pukul 07.00 WIB.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Keterlambatan lebih dari 15 menit tanpa keterangan yang sah dihitung sebagai alpha (absen tanpa keterangan).</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa yang tidak hadir wajib menyerahkan surat izin dari orang tua/wali pada hari berikutnya atau menghubungi pihak sekolah sebelum pukul 08.00 WIB.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Izin tidak masuk sekolah untuk keperluan penting diberikan paling banyak 3 hari dalam satu semester.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa sakit lebih dari 3 hari wajib menyertakan surat keterangan dokter.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Kehadiran minimal 80% per semester sebagai syarat kenaikan kelas dan kelulusan.</div></div>
+      </div>
+    </div>
+
+    <!-- Seragam -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="rule-group">
+        <div class="rule-group-title">👔 B. Pakaian & Penampilan</div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengenakan seragam sekolah sesuai ketentuan: Senin–Selasa seragam putih abu-abu, Rabu–Kamis seragam batik sekolah, Jumat seragam pramuka/muslim, Sabtu seragam olahraga/praktek.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Seragam harus bersih, rapi, tidak kusut, dan dikenakan sebagaimana mestinya (baju dimasukkan ke dalam celana/rok).</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Siswi wajib mengenakan jilbab/kerudung yang menutup dada selama berada di lingkungan sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa putra rambut harus rapi, tidak melebihi telinga dan kerah baju, tidak dicat, tidak di-gel berlebihan.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang memakai aksesoris berlebihan: gelang, kalung logam, anting (bagi siswa putra), tindik, atau tato.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang menggunakan sepatu hak tinggi (heels). Sepatu yang diperbolehkan berwarna hitam bermodel tertutup.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang memakai make-up berlebihan dan kutek/cat kuku di lingkungan sekolah.</div></div>
+      </div>
+    </div>
+
+    <!-- Perilaku -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="rule-group">
+        <div class="rule-group-title">🤝 C. Perilaku & Etika</div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib bersikap sopan, hormat, dan santun kepada seluruh warga sekolah: guru, karyawan, dan sesama siswa.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengucapkan salam ketika bertemu guru atau memasuki ruangan.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengikuti kegiatan shalat berjamaah Dzuhur dan Ashar yang diselenggarakan sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengikuti seluruh kegiatan keagamaan sekolah: tadarus Al-Qur'an, peringatan hari besar Islam, dan kegiatan pesantren.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang keras melakukan perundungan (bullying), kekerasan fisik maupun verbal, atau tindakan diskriminatif dalam bentuk apapun.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang keras membawa, mengonsumsi, atau menyebarkan rokok, minuman keras, narkoba, dan sejenisnya.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang keras melakukan tawuran, vandalisme, atau perbuatan kriminal lainnya di dalam maupun di luar sekolah yang mencemarkan nama baik sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang berpacaran secara berlebihan atau melakukan tindakan asusila di lingkungan sekolah.</div></div>
+      </div>
+    </div>
+
+    <!-- Proses Belajar -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="rule-group">
+        <div class="rule-group-title">📚 D. Kegiatan Belajar Mengajar</div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengikuti seluruh kegiatan KBM dengan penuh perhatian dan aktif berpartisipasi.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengerjakan dan mengumpulkan tugas, PR, atau proyek sesuai tenggat waktu yang ditetapkan guru.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang menyontek, menjiplak (plagiat), atau membantu perbuatan curang dalam bentuk apapun saat ujian maupun pengerjaan tugas.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang membawa dan menggunakan ponsel/HP selama jam pelajaran berlangsung. HP dikumpulkan di loker yang disediakan sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib menjaga ketertiban, kebersihan, dan kenyamanan ruang kelas dan lingkungan sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Dilarang meninggalkan kelas selama pelajaran berlangsung tanpa izin guru yang mengajar.</div></div>
+      </div>
+    </div>
+
+    <!-- Fasilitas -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="rule-group">
+        <div class="rule-group-title">🏛️ E. Penggunaan Fasilitas Sekolah</div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib menjaga dan merawat seluruh fasilitas sekolah: gedung, peralatan lab, buku perpustakaan, dan inventaris kelas.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Fasilitas komputer dan lab hanya digunakan untuk keperluan belajar sesuai jadwal dan arahan guru.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang merusak, mencoret-coret dinding, meja, kursi, atau properti sekolah lainnya.</div></div>
+        <div class="rule-item"><div class="rule-dot"></div><div>Siswa yang meminjam alat atau buku dari sekolah wajib mengembalikannya dalam kondisi baik dan tepat waktu.</div></div>
+      </div>
+    </div>
+
+    <!-- Ekstrakurikuler -->
+    <div class="card">
+      <div class="rule-group">
+        <div class="rule-group-title">🎯 F. Kegiatan Ekstrakurikuler & Organisasi</div>
+        <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa wajib mengikuti minimal satu kegiatan ekstrakurikuler yang tersedia di sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa dianjurkan aktif dalam kegiatan OSIS dan organisasi kepemudaan Islam yang diselenggarakan sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot gold"></div><div>Kegiatan ekstrakurikuler atau rapat OSIS yang dilaksanakan di luar jam sekolah wajib mendapat izin dari pihak sekolah dan seizin orang tua.</div></div>
+        <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa yang mengikuti kegiatan perlombaan/olimpiade mewakili sekolah wajib mempersiapkan diri dengan sungguh-sungguh dan menjaga nama baik sekolah.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SANKSI -->
+  <section class="section" id="sanksi">
+    <div class="section-header">
+      <div class="section-icon">⚠️</div>
+      <div>
+        <div class="section-title">Ketentuan Sanksi & Penghargaan</div>
+        <div class="section-desc">Konsekuensi pelanggaran dan apresiasi prestasi siswa</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header-bar">📊 Tingkatan Pelanggaran & Sanksi</div>
+      <div class="rule-group">
+        <div class="rule-group-title" style="background:#f0f5ff; border-color:#5b7fd4;">🟡 Pelanggaran Ringan (Peringatan Lisan / Tertulis)</div>
+        <div class="rule-item"><div class="rule-dot gold"></div><div>Terlambat 1–2 kali dalam sebulan → teguran lisan dan bimbingan guru BK.</div></div>
+        <div class="rule-item"><div class="rule-dot gold"></div><div>Tidak mengerjakan tugas 1–2 kali → tugas susulan dan pengurangan nilai.</div></div>
+        <div class="rule-item"><div class="rule-dot gold"></div><div>Seragam tidak sesuai ketentuan → penggantian seragam sementara dan surat peringatan.</div></div>
+      </div>
+      <div class="rule-group">
+        <div class="rule-group-title" style="background:#fff8ee; border-color:#f5a623;">🟠 Pelanggaran Sedang (Pemanggilan Orang Tua)</div>
+        <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Terlambat lebih dari 3 kali atau alpha lebih dari 5 hari dalam satu semester → panggilan orang tua dan surat peringatan tertulis.</div></div>
+        <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Membawa HP dan menggunakannya saat KBM → HP disita, dikembalikan kepada orang tua, surat peringatan pertama.</div></div>
+        <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Menyontek saat ujian → nilai ujian 0, laporan kepada orang tua, dan skorsing 1–3 hari.</div></div>
+      </div>
+      <div class="rule-group">
+        <div class="rule-group-title" style="background:#fff5f5; border-color:#e53e3e;">🔴 Pelanggaran Berat (Skorsing / Dikeluarkan)</div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Melakukan kekerasan/tawuran → skorsing 3–14 hari dan wajib membuat pernyataan tidak mengulangi; jika berulang dikeluarkan dari sekolah.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Terbukti membawa/mengonsumsi narkoba atau minuman keras → dikeluarkan dari sekolah secara permanen dan dilaporkan kepada pihak berwajib.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Melakukan tindakan asusila di lingkungan sekolah → dikeluarkan dari sekolah setelah melalui sidang tim disiplin.</div></div>
+        <div class="rule-item"><div class="rule-dot red"></div><div>Merusak fasilitas sekolah secara sengaja → wajib mengganti kerugian dan dapat dikeluarkan dari sekolah.</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header-bar" style="background: linear-gradient(90deg, #8a6914, #c9a008);">🏆 Penghargaan Siswa Berprestasi</div>
+      <div class="req-list">
+        <div class="req-item">
+          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
+          <div>
+            <div class="req-text">Siswa dengan nilai akademik terbaik setiap semester mendapatkan piagam penghargaan dan hadiah dari sekolah.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
+          <div>
+            <div class="req-text">Siswa yang memenangkan lomba/kompetisi tingkat kabupaten, provinsi, atau nasional mendapatkan penghargaan khusus dan dapat dipertimbangkan untuk beasiswa.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
+          <div>
+            <div class="req-text">Siswa dengan kehadiran 100% selama satu semester mendapatkan penghargaan kedisiplinan.</div>
+          </div>
+        </div>
+        <div class="req-item">
+          <div class="req-num" style="background:var(--gold); color: var(--green-deep);">★</div>
+          <div>
+            <div class="req-text">Siswa yang aktif dalam kegiatan organisasi dan menunjukkan kepemimpinan yang baik mendapatkan sertifikat kepemimpinan.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:16px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-text">
+        Tata tertib ini dibuat berdasarkan nilai-nilai Islam dan peraturan pendidikan nasional. Seluruh warga sekolah wajib menjunjung tinggi akhlakul karimah sebagaimana yang diajarkan dalam Al-Qur'an dan Sunnah Rasulullah SAW.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div style="font-family:'Amiri',serif; font-size:18px; color:var(--gold-light); margin-bottom:8px;">
+    وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا
+  </div>
+  <div style="font-size:12px; margin-bottom:12px; color:rgba(255,255,255,.5);">"Barangsiapa bertakwa kepada Allah, niscaya Dia akan membukakan jalan keluar baginya." (QS. At-Talaq: 2)</div>
+  <strong>SMKS Ciledug Al Musaddadiyah</strong><br>
+  Jl. Mayor Abdurachman No. 271, Ciledug, Sumedang, Jawa Barat<br>
+  <span style="font-size:12px;">Dokumen ini diterbitkan untuk keperluan Penerimaan Siswa Baru — TP 2025/2026</span>
+</footer>
+
+<script>
+  // Active tab highlight on scroll
+  const tabs = document.querySelectorAll('.nav-tab');
+  const sections = document.querySelectorAll('.section');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tabs.forEach(t => t.classList.remove('active'));
+        const active = document.querySelector(`.nav-tab[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
