@@ -282,6 +282,7 @@
       transition: transform var(--tr), box-shadow var(--tr);
     }
     .info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .info-card { position: relative; }
     .info-card-icon { font-size: 30px; margin-bottom: 10px; }
     .info-card-label {
       font-family: 'DM Sans', sans-serif;
@@ -366,6 +367,7 @@
       border-bottom: 1px solid var(--blue-pale);
     }
     .step:last-child { border-bottom: none; }
+    .step { position: relative; }
     .step-num {
       width: 38px; height: 38px;
       background: linear-gradient(135deg,var(--blue-mid),var(--blue-deep));
@@ -780,37 +782,16 @@
         <div class="section-desc">Penerimaan Siswa Baru Tahun Pelajaran 2026/2027</div>
       </div>
     </div>
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-card-icon">📅</div>
-        <div class="info-card-label">Pendaftaran</div>
-        <div class="info-card-value">Juni – Juli</div>
-        <div class="info-card-sub">Setiap hari kerja</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-icon">🕐</div>
-        <div class="info-card-label">Jam Layanan</div>
-        <div class="info-card-value">08.00 – 14.00</div>
-        <div class="info-card-sub">Senin – Sabtu (WIB)</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-icon">💰</div>
-        <div class="info-card-label">Biaya Pendaftaran</div>
-        <div class="info-card-value">Rp 200.000</div>
-        <div class="info-card-sub">Tidak dapat dikembalikan</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-icon">📞</div>
-        <div class="info-card-label">Kontak</div>
-        <div class="info-card-value">087856681523</div>
-        <div class="info-card-sub">Tata Usaha Sekolah</div>
-      </div>
+    <div class="info-grid" id="infoGrid" aria-live="polite"></div>
+    <div class="section-admin-actions" id="infoAdminActions" style="margin-top:14px;background:var(--white);border:1px dashed var(--border);border-radius:var(--radius-sm);">
+      <button class="btn btn-primary btn-sm" id="btnAddInfo" type="button">➕ Tambah Info</button>
+      <button class="btn btn-danger btn-sm" id="btnResetInfo" type="button">🔄 Reset Info Umum ke Bawaan</button>
     </div>
     <div class="alert alert-info" style="margin-top:20px;">
       <div class="alert-icon">🏫</div>
       <div class="alert-text">
         <strong>Program Keahlian Tersedia:</strong><br>
-        Teknik Komputer &amp; Jaringan (TKJ) · Akuntansi (AK) · Manajemen Perkantoran (MP) · Bisnis Digital (BD) · Desain Komunikasi Visual (DKV) · Teknik Kendaraan Ringan (TKR) · Teknik Sepeda Motor (TSM)
+        <span id="infoProgramsText" class="editable-field" contenteditable="false" data-multiline="1"></span>
       </div>
     </div>
   </section>
@@ -835,7 +816,7 @@
     <div class="alert alert-warning">
       <div class="alert-icon">⚠️</div>
       <div class="alert-text" id="specialReqWrap">
-        <strong>Persyaratan Khusus:</strong> <span id="specialReqText" class="editable-field" contenteditable="false">Calon siswa berusia maksimal 21 tahun pada saat awal tahun pelajaran. Calon siswa bersedia mengikuti kegiatan pesantren dan keagamaan yang diselenggarakan oleh sekolah.</span>
+        <strong>Persyaratan Khusus:</strong> <span id="specialReqText" class="editable-field" contenteditable="false" data-multiline="1">Calon siswa berusia maksimal 21 tahun pada saat awal tahun pelajaran. Calon siswa bersedia mengikuti kegiatan pesantren dan keagamaan yang diselenggarakan oleh sekolah.</span>
       </div>
     </div>
   </section>
@@ -850,49 +831,10 @@
       </div>
     </div>
     <div class="card">
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <div class="step-title">Ambil &amp; Isi Formulir</div>
-            <div class="step-desc">Ambil formulir pendaftaran di Tata Usaha atau unduh di website sekolah. Isi dengan lengkap dan benar menggunakan huruf cetak.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <div class="step-title">Lengkapi Berkas</div>
-            <div class="step-desc">Siapkan semua dokumen persyaratan, susun dalam map berwarna hijau, dan beri label nama calon siswa.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <div class="step-title">Serahkan Berkas &amp; Bayar Biaya Pendaftaran</div>
-            <div class="step-desc">Serahkan berkas ke loket Tata Usaha dan lakukan pembayaran biaya pendaftaran. Simpan bukti pembayaran.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <div class="step-title">Seleksi Administrasi &amp; Tes</div>
-            <div class="step-desc">Calon siswa akan mengikuti tes tertulis (Matematika, Bahasa Indonesia, Ilmu Pengetahuan Umum) dan wawancara. Bagi yang beragama Islam, ada tes membaca Al-Qur'an.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">5</div>
-          <div class="step-content">
-            <div class="step-title">Pengumuman Hasil Seleksi</div>
-            <div class="step-desc">Hasil seleksi diumumkan melalui papan pengumuman sekolah dan website resmi. Calon siswa yang diterima wajib melakukan daftar ulang.</div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">6</div>
-          <div class="step-content">
-            <div class="step-title">Daftar Ulang &amp; Orientasi</div>
-            <div class="step-desc">Selesaikan administrasi daftar ulang sesuai jadwal. Wajib mengikuti kegiatan Masa Pengenalan Lingkungan Sekolah (MPLS).</div>
-          </div>
-        </div>
+      <div class="steps" id="alurSteps" aria-live="polite"></div>
+      <div class="section-admin-actions" id="alurAdminActions">
+        <button class="btn btn-primary btn-sm" id="btnAddAlur" type="button">➕ Tambah Langkah</button>
+        <button class="btn btn-danger btn-sm" id="btnResetAlur" type="button">🔄 Reset Alur ke Bawaan</button>
       </div>
     </div>
   </section>
@@ -907,75 +849,10 @@
       </div>
     </div>
 
-    <div class="card" style="margin-bottom:16px;">
-      <div class="rule-group">
-        <div class="rule-group-title">⏰ A. Kehadiran &amp; Kedisiplinan Waktu</div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib hadir di sekolah paling lambat pukul 07.00 WIB. Pintu gerbang ditutup tepat pukul 07.00 WIB.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Keterlambatan lebih dari 15 menit tanpa keterangan yang sah dihitung sebagai alpha (absen tanpa keterangan).</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa yang tidak hadir wajib menyerahkan surat izin dari orang tua/wali pada hari berikutnya atau menghubungi pihak sekolah sebelum pukul 08.00 WIB.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Izin tidak masuk sekolah untuk keperluan penting diberikan paling banyak 3 hari dalam satu semester.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa sakit lebih dari 3 hari wajib menyertakan surat keterangan dokter.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Kehadiran minimal 80% per semester sebagai syarat kenaikan kelas dan kelulusan.</div></div>
-      </div>
-    </div>
+    <div id="tataTertibContainer" aria-live="polite"></div>
 
-    <div class="card" style="margin-bottom:16px;">
-      <div class="rule-group">
-        <div class="rule-group-title">👔 B. Pakaian &amp; Penampilan</div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengenakan seragam sekolah sesuai ketentuan: Senin–Selasa seragam putih abu-abu, Rabu–Kamis seragam batik sekolah, Jumat seragam pramuka/muslim, Sabtu seragam olahraga/praktek.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Seragam harus bersih, rapi, tidak kusut, dan dikenakan sebagaimana mestinya (baju dimasukkan ke dalam celana/rok).</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Siswi wajib mengenakan jilbab/kerudung yang menutup dada selama berada di lingkungan sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa putra rambut harus rapi, tidak melebihi telinga dan kerah baju, tidak dicat, tidak di-gel berlebihan.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang memakai aksesoris berlebihan: gelang, kalung logam, anting (bagi siswa putra), tindik, atau tato.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang menggunakan sepatu hak tinggi (heels). Sepatu yang diperbolehkan berwarna hitam bermodel tertutup.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang memakai make-up berlebihan dan kutek/cat kuku di lingkungan sekolah.</div></div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px;">
-      <div class="rule-group">
-        <div class="rule-group-title">🤝 C. Perilaku &amp; Etika</div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib bersikap sopan, hormat, dan santun kepada seluruh warga sekolah: guru, karyawan, dan sesama siswa.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengucapkan salam ketika bertemu guru atau memasuki ruangan.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengikuti kegiatan shalat berjamaah Dzuhur dan Ashar yang diselenggarakan sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengikuti seluruh kegiatan keagamaan sekolah: tadarus Al-Qur'an, peringatan hari besar Islam, dan kegiatan pesantren.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang keras melakukan perundungan (bullying), kekerasan fisik maupun verbal, atau tindakan diskriminatif dalam bentuk apapun.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang keras membawa, mengonsumsi, atau menyebarkan rokok, minuman keras, narkoba, dan sejenisnya.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang keras melakukan tawuran, vandalisme, atau perbuatan kriminal lainnya di dalam maupun di luar sekolah yang mencemarkan nama baik sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang berpacaran secara berlebihan atau melakukan tindakan asusila di lingkungan sekolah.</div></div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px;">
-      <div class="rule-group">
-        <div class="rule-group-title">📚 D. Kegiatan Belajar Mengajar</div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengikuti seluruh kegiatan KBM dengan penuh perhatian dan aktif berpartisipasi.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib mengerjakan dan mengumpulkan tugas, PR, atau proyek sesuai tenggat waktu yang ditetapkan guru.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang menyontek, menjiplak (plagiat), atau membantu perbuatan curang dalam bentuk apapun saat ujian maupun pengerjaan tugas.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang membawa dan menggunakan ponsel/HP selama jam pelajaran berlangsung. HP dikumpulkan di loker yang disediakan sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib menjaga ketertiban, kebersihan, dan kenyamanan ruang kelas dan lingkungan sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Dilarang meninggalkan kelas selama pelajaran berlangsung tanpa izin guru yang mengajar.</div></div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px;">
-      <div class="rule-group">
-        <div class="rule-group-title">🏛️ E. Penggunaan Fasilitas Sekolah</div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa wajib menjaga dan merawat seluruh fasilitas sekolah: gedung, peralatan lab, buku perpustakaan, dan inventaris kelas.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Fasilitas komputer dan lab hanya digunakan untuk keperluan belajar sesuai jadwal dan arahan guru.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Dilarang merusak, mencoret-coret dinding, meja, kursi, atau properti sekolah lainnya.</div></div>
-        <div class="rule-item"><div class="rule-dot"></div><div>Siswa yang meminjam alat atau buku dari sekolah wajib mengembalikannya dalam kondisi baik dan tepat waktu.</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="rule-group">
-        <div class="rule-group-title">🎯 F. Kegiatan Ekstrakurikuler &amp; Organisasi</div>
-        <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa wajib mengikuti minimal satu kegiatan ekstrakurikuler yang tersedia di sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa dianjurkan aktif dalam kegiatan OSIS dan organisasi kepemudaan Islam yang diselenggarakan sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot gold"></div><div>Kegiatan ekstrakurikuler atau rapat OSIS yang dilaksanakan di luar jam sekolah wajib mendapat izin dari pihak sekolah dan seizin orang tua.</div></div>
-        <div class="rule-item"><div class="rule-dot gold"></div><div>Siswa yang mengikuti kegiatan perlombaan/olimpiade mewakili sekolah wajib mempersiapkan diri dengan sungguh-sungguh dan menjaga nama baik sekolah.</div></div>
-      </div>
+    <div class="section-admin-actions" id="tataTertibAdminActions" style="margin-top:4px;background:var(--white);border:1px dashed var(--border);border-radius:var(--radius-sm);">
+      <button class="btn btn-danger btn-sm" id="btnResetTataTertib" type="button">🔄 Reset Tata Tertib ke Bawaan</button>
     </div>
   </section>
 
@@ -991,53 +868,25 @@
 
     <div class="card" style="margin-bottom:16px;">
       <div class="card-header-bar">📊 Tingkatan Pelanggaran &amp; Sanksi</div>
-      <div class="rule-group">
-        <div class="rule-group-title" style="background:#e3f2fd;border-color:#42a5f5;">🟡 Pelanggaran Ringan (Peringatan Lisan / Tertulis)</div>
-        <div class="rule-item"><div class="rule-dot gold"></div><div>Terlambat 1–2 kali dalam sebulan → teguran lisan dan bimbingan guru BK.</div></div>
-        <div class="rule-item"><div class="rule-dot gold"></div><div>Tidak mengerjakan tugas 1–2 kali → tugas susulan dan pengurangan nilai.</div></div>
-        <div class="rule-item"><div class="rule-dot gold"></div><div>Seragam tidak sesuai ketentuan → penggantian seragam sementara dan surat peringatan.</div></div>
-      </div>
-      <div class="rule-group">
-        <div class="rule-group-title" style="background:#fff8ee;border-color:#f5a623;">🟠 Pelanggaran Sedang (Pemanggilan Orang Tua)</div>
-        <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Terlambat lebih dari 3 kali atau alpha lebih dari 5 hari dalam satu semester → panggilan orang tua dan surat peringatan tertulis.</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Membawa HP dan menggunakannya saat KBM → HP disita, dikembalikan kepada orang tua, surat peringatan pertama.</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#ed8936;"></div><div>Menyontek saat ujian → nilai ujian 0, laporan kepada orang tua, dan skorsing 1–3 hari.</div></div>
-      </div>
-      <div class="rule-group">
-        <div class="rule-group-title" style="background:#fce4ec;border-color:#e53935;">🔴 Pelanggaran Berat (Skorsing / Dikeluarkan)</div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Melakukan kekerasan/tawuran → skorsing 3–14 hari dan wajib membuat pernyataan tidak mengulangi; jika berulang dikeluarkan dari sekolah.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Terbukti membawa/mengonsumsi narkoba atau minuman keras → dikeluarkan dari sekolah secara permanen dan dilaporkan kepada pihak berwajib.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Melakukan tindakan asusila di lingkungan sekolah → dikeluarkan dari sekolah setelah melalui sidang tim disiplin.</div></div>
-        <div class="rule-item"><div class="rule-dot red"></div><div>Merusak fasilitas sekolah secara sengaja → wajib mengganti kerugian dan dapat dikeluarkan dari sekolah.</div></div>
-      </div>
+      <div id="sanksiLevels" aria-live="polite"></div>
     </div>
 
     <div class="card">
       <div class="card-header-bar" style="background:linear-gradient(90deg,#7a5900,#c9a008);">🏆 Penghargaan Siswa Berprestasi</div>
-      <div class="req-list">
-        <div class="req-item">
-          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
-          <div><div class="req-text">Siswa dengan nilai akademik terbaik setiap semester mendapatkan piagam penghargaan dan hadiah dari sekolah.</div></div>
-        </div>
-        <div class="req-item">
-          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
-          <div><div class="req-text">Siswa yang memenangkan lomba/kompetisi tingkat kabupaten, provinsi, atau nasional mendapatkan penghargaan khusus dan dapat dipertimbangkan untuk beasiswa.</div></div>
-        </div>
-        <div class="req-item">
-          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
-          <div><div class="req-text">Siswa dengan kehadiran 100% selama satu semester mendapatkan penghargaan kedisiplinan.</div></div>
-        </div>
-        <div class="req-item">
-          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
-          <div><div class="req-text">Siswa yang aktif dalam kegiatan organisasi dan menunjukkan kepemimpinan yang baik mendapatkan sertifikat kepemimpinan.</div></div>
-        </div>
+      <div class="req-list" id="sanksiRewards" aria-live="polite"></div>
+      <div class="section-admin-actions" id="sanksiRewardsAdminActions">
+        <button class="btn btn-primary btn-sm" id="btnAddReward" type="button">➕ Tambah Penghargaan</button>
       </div>
+    </div>
+
+    <div class="section-admin-actions" id="sanksiAdminActions" style="margin-top:14px;background:var(--white);border:1px dashed var(--border);border-radius:var(--radius-sm);">
+      <button class="btn btn-danger btn-sm" id="btnResetSanksi" type="button">🔄 Reset Sanksi &amp; Penghargaan ke Bawaan</button>
     </div>
 
     <div class="alert alert-info" style="margin-top:16px;">
       <div class="alert-icon">ℹ️</div>
-      <div class="alert-text">
-        Tata tertib ini dibuat berdasarkan nilai-nilai Islam dan peraturan pendidikan nasional. Seluruh warga sekolah wajib menjunjung tinggi akhlakul karimah sebagaimana yang diajarkan dalam Al-Qur'an dan Sunnah Rasulullah SAW.
+      <div class="alert-text" id="sanksiClosingWrap">
+        <span id="sanksiClosingText" class="editable-field" contenteditable="false" data-multiline="1"></span>
       </div>
     </div>
   </section>
@@ -1082,7 +931,7 @@
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-modal">
     <h3>Login Admin</h3>
-    <p>Masuk untuk memperbarui data Persyaratan &amp; FAQ. Perubahan disimpan di penyimpanan lokal perangkat/browser ini.</p>
+    <p>Masuk untuk memperbarui seluruh konten halaman: Info Umum, Persyaratan, Alur Pendaftaran, Tata Tertib, Sanksi &amp; Penghargaan, dan FAQ. Perubahan disimpan di penyimpanan lokal perangkat/browser ini.</p>
     <div class="admin-lock-notice" id="adminLockNotice"></div>
     <div class="admin-error" id="adminError">Kata sandi salah, coba lagi.</div>
     <input type="password" id="adminPassword" placeholder="Masukkan kata sandi admin" autocomplete="off" />
@@ -1163,6 +1012,10 @@
     const HASH_KEY          = 'smks_psb_admin_hash_v1';
     const REQ_STORAGE_KEY    = 'smks_psb_persyaratan_v1';
     const FAQ_STORAGE_KEY    = 'smks_psb_faq_v1';
+    const INFO_STORAGE_KEY       = 'smks_psb_info_v1';
+    const ALUR_STORAGE_KEY       = 'smks_psb_alur_v1';
+    const TATATERTIB_STORAGE_KEY = 'smks_psb_tatatertib_v1';
+    const SANKSI_STORAGE_KEY     = 'smks_psb_sanksi_v1';
     const SESSION_FLAG_KEY   = 'smks_psb_admin_session';
     const LAST_ACTIVITY_KEY  = 'smks_psb_admin_last_activity';
     const FAIL_COUNT_KEY     = 'smks_psb_admin_fail_count';
@@ -1203,6 +1056,107 @@
       ]
     };
 
+    const DEFAULT_INFO_DATA = {
+      cards: [
+        { icon: '📅', label: 'Pendaftaran',       value: 'Juni – Juli',      sub: 'Setiap hari kerja' },
+        { icon: '🕐', label: 'Jam Layanan',       value: '08.00 – 14.00',    sub: 'Senin – Sabtu (WIB)' },
+        { icon: '💰', label: 'Biaya Pendaftaran', value: 'Rp 200.000',       sub: 'Tidak dapat dikembalikan' },
+        { icon: '📞', label: 'Kontak',            value: '087856681523',    sub: 'Tata Usaha Sekolah' }
+      ],
+      programs: 'Teknik Komputer & Jaringan (TKJ) · Akuntansi (AK) · Manajemen Perkantoran (MP) · Bisnis Digital (BD) · Desain Komunikasi Visual (DKV) · Teknik Kendaraan Ringan (TKR) · Teknik Sepeda Motor (TSM)'
+    };
+
+    const DEFAULT_ALUR_DATA = {
+      steps: [
+        { title: 'Ambil & Isi Formulir', desc: 'Ambil formulir pendaftaran di Tata Usaha atau unduh di website sekolah. Isi dengan lengkap dan benar menggunakan huruf cetak.' },
+        { title: 'Lengkapi Berkas', desc: 'Siapkan semua dokumen persyaratan, susun dalam map berwarna hijau, dan beri label nama calon siswa.' },
+        { title: 'Serahkan Berkas & Bayar Biaya Pendaftaran', desc: 'Serahkan berkas ke loket Tata Usaha dan lakukan pembayaran biaya pendaftaran. Simpan bukti pembayaran.' },
+        { title: 'Seleksi Administrasi & Tes', desc: 'Calon siswa akan mengikuti tes tertulis (Matematika, Bahasa Indonesia, Ilmu Pengetahuan Umum) dan wawancara. Bagi yang beragama Islam, ada tes membaca Al-Qur\'an.' },
+        { title: 'Pengumuman Hasil Seleksi', desc: 'Hasil seleksi diumumkan melalui papan pengumuman sekolah dan website resmi. Calon siswa yang diterima wajib melakukan daftar ulang.' },
+        { title: 'Daftar Ulang & Orientasi', desc: 'Selesaikan administrasi daftar ulang sesuai jadwal. Wajib mengikuti kegiatan Masa Pengenalan Lingkungan Sekolah (MPLS).' }
+      ]
+    };
+
+    const DEFAULT_TATATERTIB_DATA = {
+      groups: [
+        { icon: '⏰', title: 'A. Kehadiran & Kedisiplinan Waktu', items: [
+          { text: 'Siswa wajib hadir di sekolah paling lambat pukul 07.00 WIB. Pintu gerbang ditutup tepat pukul 07.00 WIB.', dot: '' },
+          { text: 'Keterlambatan lebih dari 15 menit tanpa keterangan yang sah dihitung sebagai alpha (absen tanpa keterangan).', dot: '' },
+          { text: 'Siswa yang tidak hadir wajib menyerahkan surat izin dari orang tua/wali pada hari berikutnya atau menghubungi pihak sekolah sebelum pukul 08.00 WIB.', dot: '' },
+          { text: 'Izin tidak masuk sekolah untuk keperluan penting diberikan paling banyak 3 hari dalam satu semester.', dot: '' },
+          { text: 'Siswa sakit lebih dari 3 hari wajib menyertakan surat keterangan dokter.', dot: '' },
+          { text: 'Kehadiran minimal 80% per semester sebagai syarat kenaikan kelas dan kelulusan.', dot: '' }
+        ]},
+        { icon: '👔', title: 'B. Pakaian & Penampilan', items: [
+          { text: 'Siswa wajib mengenakan seragam sekolah sesuai ketentuan: Senin–Selasa seragam putih abu-abu, Rabu–Kamis seragam batik sekolah, Jumat seragam pramuka/muslim, Sabtu seragam olahraga/praktek.', dot: '' },
+          { text: 'Seragam harus bersih, rapi, tidak kusut, dan dikenakan sebagaimana mestinya (baju dimasukkan ke dalam celana/rok).', dot: '' },
+          { text: 'Siswi wajib mengenakan jilbab/kerudung yang menutup dada selama berada di lingkungan sekolah.', dot: 'red' },
+          { text: 'Siswa putra rambut harus rapi, tidak melebihi telinga dan kerah baju, tidak dicat, tidak di-gel berlebihan.', dot: '' },
+          { text: 'Dilarang memakai aksesoris berlebihan: gelang, kalung logam, anting (bagi siswa putra), tindik, atau tato.', dot: 'red' },
+          { text: 'Dilarang menggunakan sepatu hak tinggi (heels). Sepatu yang diperbolehkan berwarna hitam bermodel tertutup.', dot: 'red' },
+          { text: 'Dilarang memakai make-up berlebihan dan kutek/cat kuku di lingkungan sekolah.', dot: 'red' }
+        ]},
+        { icon: '🤝', title: 'C. Perilaku & Etika', items: [
+          { text: 'Siswa wajib bersikap sopan, hormat, dan santun kepada seluruh warga sekolah: guru, karyawan, dan sesama siswa.', dot: '' },
+          { text: 'Siswa wajib mengucapkan salam ketika bertemu guru atau memasuki ruangan.', dot: '' },
+          { text: 'Siswa wajib mengikuti kegiatan shalat berjamaah Dzuhur dan Ashar yang diselenggarakan sekolah.', dot: '' },
+          { text: 'Siswa wajib mengikuti seluruh kegiatan keagamaan sekolah: tadarus Al-Qur\'an, peringatan hari besar Islam, dan kegiatan pesantren.', dot: '' },
+          { text: 'Dilarang keras melakukan perundungan (bullying), kekerasan fisik maupun verbal, atau tindakan diskriminatif dalam bentuk apapun.', dot: 'red' },
+          { text: 'Dilarang keras membawa, mengonsumsi, atau menyebarkan rokok, minuman keras, narkoba, dan sejenisnya.', dot: 'red' },
+          { text: 'Dilarang keras melakukan tawuran, vandalisme, atau perbuatan kriminal lainnya di dalam maupun di luar sekolah yang mencemarkan nama baik sekolah.', dot: 'red' },
+          { text: 'Dilarang berpacaran secara berlebihan atau melakukan tindakan asusila di lingkungan sekolah.', dot: 'red' }
+        ]},
+        { icon: '📚', title: 'D. Kegiatan Belajar Mengajar', items: [
+          { text: 'Siswa wajib mengikuti seluruh kegiatan KBM dengan penuh perhatian dan aktif berpartisipasi.', dot: '' },
+          { text: 'Siswa wajib mengerjakan dan mengumpulkan tugas, PR, atau proyek sesuai tenggat waktu yang ditetapkan guru.', dot: '' },
+          { text: 'Dilarang menyontek, menjiplak (plagiat), atau membantu perbuatan curang dalam bentuk apapun saat ujian maupun pengerjaan tugas.', dot: 'red' },
+          { text: 'Dilarang membawa dan menggunakan ponsel/HP selama jam pelajaran berlangsung. HP dikumpulkan di loker yang disediakan sekolah.', dot: 'red' },
+          { text: 'Siswa wajib menjaga ketertiban, kebersihan, dan kenyamanan ruang kelas dan lingkungan sekolah.', dot: '' },
+          { text: 'Dilarang meninggalkan kelas selama pelajaran berlangsung tanpa izin guru yang mengajar.', dot: '' }
+        ]},
+        { icon: '🏛️', title: 'E. Penggunaan Fasilitas Sekolah', items: [
+          { text: 'Siswa wajib menjaga dan merawat seluruh fasilitas sekolah: gedung, peralatan lab, buku perpustakaan, dan inventaris kelas.', dot: '' },
+          { text: 'Fasilitas komputer dan lab hanya digunakan untuk keperluan belajar sesuai jadwal dan arahan guru.', dot: '' },
+          { text: 'Dilarang merusak, mencoret-coret dinding, meja, kursi, atau properti sekolah lainnya.', dot: 'red' },
+          { text: 'Siswa yang meminjam alat atau buku dari sekolah wajib mengembalikannya dalam kondisi baik dan tepat waktu.', dot: '' }
+        ]},
+        { icon: '🎯', title: 'F. Kegiatan Ekstrakurikuler & Organisasi', items: [
+          { text: 'Siswa wajib mengikuti minimal satu kegiatan ekstrakurikuler yang tersedia di sekolah.', dot: 'gold' },
+          { text: 'Siswa dianjurkan aktif dalam kegiatan OSIS dan organisasi kepemudaan Islam yang diselenggarakan sekolah.', dot: 'gold' },
+          { text: 'Kegiatan ekstrakurikuler atau rapat OSIS yang dilaksanakan di luar jam sekolah wajib mendapat izin dari pihak sekolah dan seizin orang tua.', dot: 'gold' },
+          { text: 'Siswa yang mengikuti kegiatan perlombaan/olimpiade mewakili sekolah wajib mempersiapkan diri dengan sungguh-sungguh dan menjaga nama baik sekolah.', dot: 'gold' }
+        ]}
+      ]
+    };
+
+    const DEFAULT_SANKSI_DATA = {
+      levels: [
+        { label: '🟡 Pelanggaran Ringan (Peringatan Lisan / Tertulis)', bg: '#e3f2fd', border: '#42a5f5', dotColor: 'var(--gold)', items: [
+          'Terlambat 1–2 kali dalam sebulan → teguran lisan dan bimbingan guru BK.',
+          'Tidak mengerjakan tugas 1–2 kali → tugas susulan dan pengurangan nilai.',
+          'Seragam tidak sesuai ketentuan → penggantian seragam sementara dan surat peringatan.'
+        ]},
+        { label: '🟠 Pelanggaran Sedang (Pemanggilan Orang Tua)', bg: '#fff8ee', border: '#f5a623', dotColor: '#ed8936', items: [
+          'Terlambat lebih dari 3 kali atau alpha lebih dari 5 hari dalam satu semester → panggilan orang tua dan surat peringatan tertulis.',
+          'Membawa HP dan menggunakannya saat KBM → HP disita, dikembalikan kepada orang tua, surat peringatan pertama.',
+          'Menyontek saat ujian → nilai ujian 0, laporan kepada orang tua, dan skorsing 1–3 hari.'
+        ]},
+        { label: '🔴 Pelanggaran Berat (Skorsing / Dikeluarkan)', bg: '#fce4ec', border: '#e53935', dotColor: 'var(--red)', items: [
+          'Melakukan kekerasan/tawuran → skorsing 3–14 hari dan wajib membuat pernyataan tidak mengulangi; jika berulang dikeluarkan dari sekolah.',
+          'Terbukti membawa/mengonsumsi narkoba atau minuman keras → dikeluarkan dari sekolah secara permanen dan dilaporkan kepada pihak berwajib.',
+          'Melakukan tindakan asusila di lingkungan sekolah → dikeluarkan dari sekolah setelah melalui sidang tim disiplin.',
+          'Merusak fasilitas sekolah secara sengaja → wajib mengganti kerugian dan dapat dikeluarkan dari sekolah.'
+        ]}
+      ],
+      rewards: [
+        'Siswa dengan nilai akademik terbaik setiap semester mendapatkan piagam penghargaan dan hadiah dari sekolah.',
+        'Siswa yang memenangkan lomba/kompetisi tingkat kabupaten, provinsi, atau nasional mendapatkan penghargaan khusus dan dapat dipertimbangkan untuk beasiswa.',
+        'Siswa dengan kehadiran 100% selama satu semester mendapatkan penghargaan kedisiplinan.',
+        'Siswa yang aktif dalam kegiatan organisasi dan menunjukkan kepemimpinan yang baik mendapatkan sertifikat kepemimpinan.'
+      ],
+      closingNote: 'Tata tertib ini dibuat berdasarkan nilai-nilai Islam dan peraturan pendidikan nasional. Seluruh warga sekolah wajib menjunjung tinggi akhlakul karimah sebagaimana yang diajarkan dalam Al-Qur\'an dan Sunnah Rasulullah SAW.'
+    };
+
     const el = {
       fab: document.getElementById('adminFab'),
       overlay: document.getElementById('adminOverlay'),
@@ -1222,6 +1176,20 @@
       faqList: document.getElementById('faqList'),
       btnAddFaq: document.getElementById('btnAddFaq'),
       btnResetFaq: document.getElementById('btnResetFaq'),
+      infoGrid: document.getElementById('infoGrid'),
+      infoPrograms: document.getElementById('infoProgramsText'),
+      btnAddInfo: document.getElementById('btnAddInfo'),
+      btnResetInfo: document.getElementById('btnResetInfo'),
+      alurSteps: document.getElementById('alurSteps'),
+      btnAddAlur: document.getElementById('btnAddAlur'),
+      btnResetAlur: document.getElementById('btnResetAlur'),
+      tataTertibContainer: document.getElementById('tataTertibContainer'),
+      btnResetTataTertib: document.getElementById('btnResetTataTertib'),
+      sanksiLevels: document.getElementById('sanksiLevels'),
+      sanksiRewards: document.getElementById('sanksiRewards'),
+      sanksiClosing: document.getElementById('sanksiClosingText'),
+      btnAddReward: document.getElementById('btnAddReward'),
+      btnResetSanksi: document.getElementById('btnResetSanksi'),
       toast: document.getElementById('adminToast'),
       cpOverlay: document.getElementById('changePasswordOverlay'),
       cpError: document.getElementById('changePasswordError'),
@@ -1231,8 +1199,12 @@
       btnCpCancel: document.getElementById('btnCancelChangePassword')
     };
 
-    let reqData = loadJson(REQ_STORAGE_KEY, DEFAULT_REQ_DATA, isValidReqData);
-    let faqData = loadJson(FAQ_STORAGE_KEY, DEFAULT_FAQ_DATA, isValidFaqData);
+    let reqData  = loadJson(REQ_STORAGE_KEY, DEFAULT_REQ_DATA, isValidReqData);
+    let faqData  = loadJson(FAQ_STORAGE_KEY, DEFAULT_FAQ_DATA, isValidFaqData);
+    let infoData = loadJson(INFO_STORAGE_KEY, DEFAULT_INFO_DATA, isValidInfoData);
+    let alurData = loadJson(ALUR_STORAGE_KEY, DEFAULT_ALUR_DATA, isValidAlurData);
+    let tataTertibData = loadJson(TATATERTIB_STORAGE_KEY, DEFAULT_TATATERTIB_DATA, isValidTataTertibData);
+    let sanksiData = loadJson(SANKSI_STORAGE_KEY, DEFAULT_SANKSI_DATA, isValidSanksiData);
     let isAdmin = false;
     let idleTimer = null;
 
@@ -1242,6 +1214,21 @@
     }
     function isValidFaqData(d) {
       return d && Array.isArray(d.items);
+    }
+    function isValidInfoData(d) {
+      return d && Array.isArray(d.cards) && d.cards.length > 0 && typeof d.programs === 'string';
+    }
+    function isValidAlurData(d) {
+      return d && Array.isArray(d.steps) && d.steps.length > 0;
+    }
+    function isValidTataTertibData(d) {
+      return d && Array.isArray(d.groups) && d.groups.length > 0 &&
+        d.groups.every(g => g && Array.isArray(g.items));
+    }
+    function isValidSanksiData(d) {
+      return d && Array.isArray(d.levels) && d.levels.length > 0 &&
+        d.levels.every(l => l && Array.isArray(l.items)) &&
+        Array.isArray(d.rewards) && typeof d.closingNote === 'string';
     }
     function loadJson(key, fallback, validator) {
       try {
@@ -1261,6 +1248,10 @@
       try {
         localStorage.setItem(REQ_STORAGE_KEY, JSON.stringify(reqData));
         localStorage.setItem(FAQ_STORAGE_KEY, JSON.stringify(faqData));
+        localStorage.setItem(INFO_STORAGE_KEY, JSON.stringify(infoData));
+        localStorage.setItem(ALUR_STORAGE_KEY, JSON.stringify(alurData));
+        localStorage.setItem(TATATERTIB_STORAGE_KEY, JSON.stringify(tataTertibData));
+        localStorage.setItem(SANKSI_STORAGE_KEY, JSON.stringify(sanksiData));
         return true;
       } catch (e) {
         console.error('Gagal menyimpan data admin.', e);
@@ -1423,7 +1414,7 @@
             ${isAdmin ? `<button class="admin-del-btn" type="button" style="position:static;margin-left:4px;" data-del-faq="${i}" title="Hapus FAQ ini">✕</button>` : ''}
           </div>
           <div class="faq-answer">
-            <div class="editable-field" contenteditable="${isAdmin}" data-field="a" data-idx="${i}">${escapeHtml(item.a)}</div>
+            <div class="editable-field" contenteditable="${isAdmin}" data-field="a" data-idx="${i}" data-multiline="1">${escapeHtml(item.a)}</div>
           </div>
         </div>
       `).join('');
@@ -1469,6 +1460,228 @@
       focusLastEditable(el.faqList, '.faq-q-text');
     }
 
+    // ── Render: Info Umum ──
+    function renderInfo() {
+      el.infoGrid.innerHTML = infoData.cards.map((c, i) => `
+        <div class="info-card" data-idx="${i}">
+          ${isAdmin ? `<button class="admin-del-btn" type="button" style="position:absolute;top:8px;right:8px;transform:none;" data-del-info="${i}" title="Hapus info ini">✕</button>` : ''}
+          <div class="info-card-icon">${escapeHtml(c.icon)}</div>
+          <div class="info-card-label editable-field" contenteditable="${isAdmin}" data-field="label" data-idx="${i}">${escapeHtml(c.label)}</div>
+          <div class="info-card-value editable-field" contenteditable="${isAdmin}" data-field="value" data-idx="${i}">${escapeHtml(c.value)}</div>
+          <div class="info-card-sub editable-field" contenteditable="${isAdmin}" data-field="sub" data-idx="${i}">${escapeHtml(c.sub)}</div>
+        </div>
+      `).join('');
+
+      el.infoPrograms.textContent = infoData.programs;
+      el.infoPrograms.setAttribute('contenteditable', isAdmin ? 'true' : 'false');
+
+      if (isAdmin) {
+        el.infoGrid.querySelectorAll('.editable-field').forEach(f => f.addEventListener('input', onInfoFieldInput));
+        el.infoGrid.querySelectorAll('[data-del-info]').forEach(b => b.addEventListener('click', onDeleteInfoCard));
+        el.infoPrograms.addEventListener('input', onInfoProgramsInput);
+      }
+    }
+    function onInfoFieldInput(e) {
+      const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+      const field = e.target.getAttribute('data-field');
+      if (Number.isInteger(idx) && infoData.cards[idx] && (field === 'label' || field === 'value' || field === 'sub')) {
+        infoData.cards[idx][field] = e.target.textContent.trim();
+      }
+    }
+    function onInfoProgramsInput(e) { infoData.programs = e.target.textContent.trim(); }
+    function onDeleteInfoCard(e) {
+      const idx = parseInt(e.currentTarget.getAttribute('data-del-info'), 10);
+      if (!Number.isInteger(idx)) return;
+      if (infoData.cards.length <= 1) { showToast('⚠️ Minimal harus ada 1 info.'); return; }
+      if (confirm('Hapus info ini?')) { infoData.cards.splice(idx, 1); renderInfo(); }
+    }
+    function addInfoCard() {
+      infoData.cards.push({ icon: '🆕', label: 'Label baru', value: 'Nilai', sub: 'Keterangan (opsional)' });
+      renderInfo();
+      focusLastEditable(el.infoGrid, '.info-card-label');
+    }
+
+    // ── Render: Alur Pendaftaran ──
+    function renderAlur() {
+      el.alurSteps.innerHTML = alurData.steps.map((s, i) => `
+        <div class="step" data-idx="${i}" ${isAdmin ? 'style="padding-right:46px;"' : ''}>
+          <div class="step-num">${i + 1}</div>
+          <div class="step-content">
+            <div class="step-title editable-field" contenteditable="${isAdmin}" data-field="title" data-idx="${i}">${escapeHtml(s.title)}</div>
+            <div class="step-desc editable-field" contenteditable="${isAdmin}" data-field="desc" data-idx="${i}" data-multiline="1">${escapeHtml(s.desc)}</div>
+          </div>
+          ${isAdmin ? `<button class="admin-del-btn" type="button" style="position:absolute;top:18px;right:12px;transform:none;" data-del-alur="${i}" title="Hapus langkah ini">✕</button>` : ''}
+        </div>
+      `).join('');
+
+      if (isAdmin) {
+        el.alurSteps.querySelectorAll('.editable-field').forEach(f => f.addEventListener('input', onAlurFieldInput));
+        el.alurSteps.querySelectorAll('[data-del-alur]').forEach(b => b.addEventListener('click', onDeleteAlurStep));
+      }
+    }
+    function onAlurFieldInput(e) {
+      const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+      const field = e.target.getAttribute('data-field');
+      if (Number.isInteger(idx) && alurData.steps[idx] && (field === 'title' || field === 'desc')) {
+        alurData.steps[idx][field] = e.target.textContent.trim();
+      }
+    }
+    function onDeleteAlurStep(e) {
+      const idx = parseInt(e.currentTarget.getAttribute('data-del-alur'), 10);
+      if (!Number.isInteger(idx)) return;
+      if (alurData.steps.length <= 1) { showToast('⚠️ Minimal harus ada 1 langkah.'); return; }
+      if (confirm('Hapus langkah ini?')) { alurData.steps.splice(idx, 1); renderAlur(); }
+    }
+    function addAlurStep() {
+      alurData.steps.push({ title: 'Langkah baru — klik untuk mengedit', desc: 'Deskripsi langkah ini (opsional diisi).' });
+      renderAlur();
+      focusLastEditable(el.alurSteps, '.step-title');
+    }
+
+    // ── Render: Tata Tertib ──
+    function renderTataTertib() {
+      el.tataTertibContainer.innerHTML = tataTertibData.groups.map((g, gi) => `
+        <div class="card" style="margin-bottom:16px;">
+          <div class="rule-group">
+            <div class="rule-group-title">
+              ${escapeHtml(g.icon)} <span class="editable-field" contenteditable="${isAdmin}" data-field="title" data-gidx="${gi}">${escapeHtml(g.title)}</span>
+            </div>
+            ${g.items.map((it, ii) => `
+              <div class="rule-item" data-gidx="${gi}" data-iidx="${ii}">
+                <div class="rule-dot${it.dot ? ' ' + it.dot : ''}"></div>
+                <div class="editable-field" contenteditable="${isAdmin}" data-field="text" data-gidx="${gi}" data-iidx="${ii}" data-multiline="1" style="flex:1;">${escapeHtml(it.text)}</div>
+                ${isAdmin ? `<button class="admin-del-btn" type="button" style="position:static;margin-left:4px;flex-shrink:0;" data-del-rule data-gidx="${gi}" data-iidx="${ii}" title="Hapus item ini">✕</button>` : ''}
+              </div>
+            `).join('')}
+          </div>
+          ${isAdmin ? `<div class="section-admin-actions" style="display:flex;"><button class="btn btn-primary btn-sm" type="button" data-add-rule="${gi}">➕ Tambah Item</button></div>` : ''}
+        </div>
+      `).join('');
+
+      if (isAdmin) {
+        el.tataTertibContainer.querySelectorAll('.editable-field[data-field="title"]').forEach(f => f.addEventListener('input', onRuleGroupTitleInput));
+        el.tataTertibContainer.querySelectorAll('.editable-field[data-field="text"]').forEach(f => f.addEventListener('input', onRuleItemInput));
+        el.tataTertibContainer.querySelectorAll('[data-del-rule]').forEach(b => b.addEventListener('click', onDeleteRuleItem));
+        el.tataTertibContainer.querySelectorAll('[data-add-rule]').forEach(b => b.addEventListener('click', onAddRuleItem));
+      }
+    }
+    function onRuleGroupTitleInput(e) {
+      const gi = parseInt(e.target.getAttribute('data-gidx'), 10);
+      if (Number.isInteger(gi) && tataTertibData.groups[gi]) {
+        tataTertibData.groups[gi].title = e.target.textContent.trim();
+      }
+    }
+    function onRuleItemInput(e) {
+      const gi = parseInt(e.target.getAttribute('data-gidx'), 10);
+      const ii = parseInt(e.target.getAttribute('data-iidx'), 10);
+      const group = tataTertibData.groups[gi];
+      if (Number.isInteger(gi) && Number.isInteger(ii) && group && group.items[ii]) {
+        group.items[ii].text = e.target.textContent.trim();
+      }
+    }
+    function onDeleteRuleItem(e) {
+      const gi = parseInt(e.currentTarget.getAttribute('data-gidx'), 10);
+      const ii = parseInt(e.currentTarget.getAttribute('data-iidx'), 10);
+      const group = tataTertibData.groups[gi];
+      if (!group || !Number.isInteger(ii)) return;
+      if (group.items.length <= 1) { showToast('⚠️ Minimal harus ada 1 item dalam kelompok ini.'); return; }
+      if (confirm('Hapus item tata tertib ini?')) { group.items.splice(ii, 1); renderTataTertib(); }
+    }
+    function onAddRuleItem(e) {
+      const gi = parseInt(e.currentTarget.getAttribute('data-add-rule'), 10);
+      const group = tataTertibData.groups[gi];
+      if (!group) return;
+      group.items.push({ text: 'Item tata tertib baru — klik untuk mengedit', dot: '' });
+      const newIdx = group.items.length - 1;
+      renderTataTertib();
+      const f = el.tataTertibContainer.querySelector(`.editable-field[data-field="text"][data-gidx="${gi}"][data-iidx="${newIdx}"]`);
+      if (f) { f.focus(); const sel = document.getSelection(); if (sel) sel.selectAllChildren(f); if (typeof f.scrollIntoView === 'function') f.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    }
+
+    // ── Render: Sanksi & Penghargaan ──
+    function renderSanksi() {
+      el.sanksiLevels.innerHTML = sanksiData.levels.map((lv, li) => `
+        <div class="rule-group">
+          <div class="rule-group-title" style="background:${lv.bg};border-color:${lv.border};">
+            <span class="editable-field" contenteditable="${isAdmin}" data-field="label" data-lidx="${li}">${escapeHtml(lv.label)}</span>
+          </div>
+          ${lv.items.map((text, ii) => `
+            <div class="rule-item" data-lidx="${li}" data-iidx="${ii}">
+              <div class="rule-dot" style="background:${lv.dotColor};"></div>
+              <div class="editable-field" contenteditable="${isAdmin}" data-field="text" data-lidx="${li}" data-iidx="${ii}" data-multiline="1" style="flex:1;">${escapeHtml(text)}</div>
+              ${isAdmin ? `<button class="admin-del-btn" type="button" style="position:static;margin-left:4px;flex-shrink:0;" data-del-sanksi-item data-lidx="${li}" data-iidx="${ii}" title="Hapus item ini">✕</button>` : ''}
+            </div>
+          `).join('')}
+          ${isAdmin ? `<div class="section-admin-actions" style="display:flex;padding:10px 22px;"><button class="btn btn-primary btn-sm" type="button" data-add-sanksi-item="${li}">➕ Tambah Item</button></div>` : ''}
+        </div>
+      `).join('');
+
+      el.sanksiRewards.innerHTML = sanksiData.rewards.map((r, i) => `
+        <div class="req-item${isAdmin ? ' admin-editing' : ''}" data-idx="${i}">
+          <div class="req-num" style="background:var(--gold);color:var(--blue-deep);">★</div>
+          <div style="flex:1;"><div class="req-text editable-field" contenteditable="${isAdmin}" data-field="reward" data-idx="${i}" data-multiline="1">${escapeHtml(r)}</div></div>
+          ${isAdmin ? `<button class="admin-del-btn" type="button" data-del-reward="${i}" title="Hapus penghargaan ini">✕</button>` : ''}
+        </div>
+      `).join('');
+
+      el.sanksiClosing.textContent = sanksiData.closingNote;
+      el.sanksiClosing.setAttribute('contenteditable', isAdmin ? 'true' : 'false');
+
+      if (isAdmin) {
+        el.sanksiLevels.querySelectorAll('.editable-field[data-field="label"]').forEach(f => f.addEventListener('input', onSanksiLabelInput));
+        el.sanksiLevels.querySelectorAll('.editable-field[data-field="text"]').forEach(f => f.addEventListener('input', onSanksiItemInput));
+        el.sanksiLevels.querySelectorAll('[data-del-sanksi-item]').forEach(b => b.addEventListener('click', onDeleteSanksiItem));
+        el.sanksiLevels.querySelectorAll('[data-add-sanksi-item]').forEach(b => b.addEventListener('click', onAddSanksiItem));
+        el.sanksiRewards.querySelectorAll('.editable-field').forEach(f => f.addEventListener('input', onRewardInput));
+        el.sanksiRewards.querySelectorAll('[data-del-reward]').forEach(b => b.addEventListener('click', onDeleteReward));
+        el.sanksiClosing.addEventListener('input', onSanksiClosingInput);
+      }
+    }
+    function onSanksiLabelInput(e) {
+      const li = parseInt(e.target.getAttribute('data-lidx'), 10);
+      if (Number.isInteger(li) && sanksiData.levels[li]) sanksiData.levels[li].label = e.target.textContent.trim();
+    }
+    function onSanksiItemInput(e) {
+      const li = parseInt(e.target.getAttribute('data-lidx'), 10);
+      const ii = parseInt(e.target.getAttribute('data-iidx'), 10);
+      const lv = sanksiData.levels[li];
+      if (lv && Number.isInteger(ii) && ii < lv.items.length) lv.items[ii] = e.target.textContent.trim();
+    }
+    function onDeleteSanksiItem(e) {
+      const li = parseInt(e.currentTarget.getAttribute('data-lidx'), 10);
+      const ii = parseInt(e.currentTarget.getAttribute('data-iidx'), 10);
+      const lv = sanksiData.levels[li];
+      if (!lv || !Number.isInteger(ii)) return;
+      if (lv.items.length <= 1) { showToast('⚠️ Minimal harus ada 1 item dalam tingkatan ini.'); return; }
+      if (confirm('Hapus item sanksi ini?')) { lv.items.splice(ii, 1); renderSanksi(); }
+    }
+    function onAddSanksiItem(e) {
+      const li = parseInt(e.currentTarget.getAttribute('data-add-sanksi-item'), 10);
+      const lv = sanksiData.levels[li];
+      if (!lv) return;
+      lv.items.push('Ketentuan baru — klik untuk mengedit');
+      const newIdx = lv.items.length - 1;
+      renderSanksi();
+      const f = el.sanksiLevels.querySelector(`.editable-field[data-field="text"][data-lidx="${li}"][data-iidx="${newIdx}"]`);
+      if (f) { f.focus(); const sel = document.getSelection(); if (sel) sel.selectAllChildren(f); if (typeof f.scrollIntoView === 'function') f.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    }
+    function onRewardInput(e) {
+      const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+      if (Number.isInteger(idx) && idx < sanksiData.rewards.length) sanksiData.rewards[idx] = e.target.textContent.trim();
+    }
+    function onDeleteReward(e) {
+      const idx = parseInt(e.currentTarget.getAttribute('data-del-reward'), 10);
+      if (!Number.isInteger(idx)) return;
+      if (sanksiData.rewards.length <= 1) { showToast('⚠️ Minimal harus ada 1 penghargaan.'); return; }
+      if (confirm('Hapus penghargaan ini?')) { sanksiData.rewards.splice(idx, 1); renderSanksi(); }
+    }
+    function addReward() {
+      sanksiData.rewards.push('Penghargaan baru — klik untuk mengedit');
+      renderSanksi();
+      focusLastEditable(el.sanksiRewards, '.req-text');
+    }
+    function onSanksiClosingInput(e) { sanksiData.closingNote = e.target.textContent.trim(); }
+
     function focusLastEditable(container, selector) {
       const nodes = container.querySelectorAll(selector);
       const target = nodes[nodes.length - 1];
@@ -1482,7 +1695,14 @@
       }
     }
 
-    function renderAll() { renderReq(); renderFaq(); }
+    function renderAll() {
+      renderInfo();
+      renderReq();
+      renderAlur();
+      renderTataTertib();
+      renderSanksi();
+      renderFaq();
+    }
 
     // ── Idle timeout ──
     function touchActivity() {
@@ -1621,6 +1841,45 @@
       }
     });
 
+    el.btnAddInfo.addEventListener('click', addInfoCard);
+    el.btnResetInfo.addEventListener('click', () => {
+      if (confirm('Kembalikan data Info Umum ke versi bawaan? Perubahan tersimpan akan hilang.')) {
+        infoData = structuredCloneSafe(DEFAULT_INFO_DATA);
+        localStorage.removeItem(INFO_STORAGE_KEY);
+        renderInfo();
+        showToast('🔄 Info Umum dikembalikan ke bawaan.');
+      }
+    });
+
+    el.btnAddAlur.addEventListener('click', addAlurStep);
+    el.btnResetAlur.addEventListener('click', () => {
+      if (confirm('Kembalikan data Alur Pendaftaran ke versi bawaan? Perubahan tersimpan akan hilang.')) {
+        alurData = structuredCloneSafe(DEFAULT_ALUR_DATA);
+        localStorage.removeItem(ALUR_STORAGE_KEY);
+        renderAlur();
+        showToast('🔄 Alur Pendaftaran dikembalikan ke bawaan.');
+      }
+    });
+
+    el.btnResetTataTertib.addEventListener('click', () => {
+      if (confirm('Kembalikan data Tata Tertib ke versi bawaan? Perubahan tersimpan akan hilang.')) {
+        tataTertibData = structuredCloneSafe(DEFAULT_TATATERTIB_DATA);
+        localStorage.removeItem(TATATERTIB_STORAGE_KEY);
+        renderTataTertib();
+        showToast('🔄 Tata Tertib dikembalikan ke bawaan.');
+      }
+    });
+
+    el.btnAddReward.addEventListener('click', addReward);
+    el.btnResetSanksi.addEventListener('click', () => {
+      if (confirm('Kembalikan data Sanksi & Penghargaan ke versi bawaan? Perubahan tersimpan akan hilang.')) {
+        sanksiData = structuredCloneSafe(DEFAULT_SANKSI_DATA);
+        localStorage.removeItem(SANKSI_STORAGE_KEY);
+        renderSanksi();
+        showToast('🔄 Sanksi & Penghargaan dikembalikan ke bawaan.');
+      }
+    });
+
     el.btnSave.addEventListener('click', () => {
       if (saveAll()) showToast('💾 Semua perubahan tersimpan di perangkat ini.');
     });
@@ -1632,9 +1891,13 @@
     el.btnCpSave.addEventListener('click', saveNewPassword);
     el.cpPass2.addEventListener('keydown', (e) => { if (e.key === 'Enter') saveNewPassword(); });
 
-    // Cegah Enter membuat baris baru aneh di kolom satu-baris (req-text/note/faq-question)
+    // Cegah Enter membuat baris baru aneh di kolom satu-baris.
+    // Kolom yang boleh berisi banyak baris (deskripsi, jawaban, catatan panjang) ditandai
+    // dengan atribut data-multiline="1" pada elemennya masing-masing saat dirender.
     document.addEventListener('keydown', (e) => {
-      if (isAdmin && e.key === 'Enter' && e.target.classList && e.target.classList.contains('editable-field') && e.target.id !== 'specialReqText' && e.target.getAttribute('data-field') !== 'a') {
+      const target = e.target;
+      const isMultiline = target && target.getAttribute && target.getAttribute('data-multiline') === '1';
+      if (isAdmin && e.key === 'Enter' && target.classList && target.classList.contains('editable-field') && !isMultiline) {
         e.preventDefault();
         e.target.blur();
       }
