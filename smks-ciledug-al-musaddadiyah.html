@@ -75,18 +75,32 @@
     /* ── LOGO FIX: tampil penuh tanpa terpotong ── */
     .school-emblem {
       /* Wrapper TIDAK memotong logo — hanya memberi glow ring */
+      position: relative;
       width: 120px;
       height: 120px;
       margin: 0 auto 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      /* ring efek emas di luar, pakai outline/drop-shadow, BUKAN overflow:hidden */
-      filter: drop-shadow(0 0 0 4px rgba(255,179,0,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.5));
+      /* BUG FIX: drop-shadow tidak mendukung nilai spread (4 angka) seperti box-shadow,
+         sehingga ring emas sebelumnya tidak pernah muncul di browser manapun.
+         Ring sekarang dibuat lewat ::before (di luar area gambar, tidak memotong logo). */
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,.5));
       animation: emblemPop .7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .school-emblem::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,179,0,.55);
+      box-shadow: 0 0 0 2px rgba(255,255,255,.08), 0 0 18px rgba(255,179,0,.35);
+      pointer-events: none;
     }
     .school-emblem img {
       /* gambar tampil 100% natural, biarkan PNG transparan terlihat utuh */
+      position: relative;
+      z-index: 1;
       width: 120px;
       height: 120px;
       object-fit: contain;
@@ -468,6 +482,212 @@
       .info-grid { grid-template-columns: 1fr; }
       .header-badges { gap: 6px; }
     }
+
+    /* ══════════ ADMIN MODE ══════════ */
+    .admin-fab {
+      position: fixed;
+      right: 20px;
+      bottom: 84px;
+      z-index: 400;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,var(--blue-mid),var(--blue-deep));
+      color: #fff;
+      border: none;
+      font-size: 22px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(11,61,145,.4);
+      transition: transform var(--tr), box-shadow var(--tr), bottom var(--tr);
+    }
+    .admin-fab:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 26px rgba(11,61,145,.5); }
+    .admin-fab.is-admin { background: linear-gradient(135deg,var(--gold),#c9860a); }
+    body.admin-mode .admin-fab { bottom: 74px; }
+    @media (max-width: 600px) {
+      .admin-fab { bottom: 96px; right: 14px; width: 46px; height: 46px; font-size: 19px; }
+      body.admin-mode .admin-fab { bottom: 128px; }
+    }
+
+    .admin-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(6,20,50,.55);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .admin-overlay.open { display: flex; }
+    .admin-modal {
+      background: #fff;
+      border-radius: var(--radius);
+      max-width: 380px; width: 100%;
+      padding: 28px 24px;
+      box-shadow: var(--shadow-lg);
+      animation: fadeUp .25s both;
+      text-align: center;
+    }
+    .admin-modal h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 17px; color: var(--blue-deep); margin-bottom: 6px;
+    }
+    .admin-modal p { font-size: 12.5px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
+    .admin-modal input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color var(--tr);
+    }
+    .admin-modal input[type="password"]:focus { border-color: var(--blue-mid); }
+    .admin-modal input[type="password"]:disabled { background: #f2f4f7; color: var(--text-muted); }
+    .admin-modal .admin-error {
+      color: var(--red); font-size: 12px; margin-bottom: 10px; display: none; font-weight: 600;
+    }
+    .admin-modal .admin-lock-notice {
+      color: #b45309; background: #fff8ee; border: 1px solid #f5a623;
+      border-radius: var(--radius-sm); padding: 10px; font-size: 12px; font-weight: 600;
+      margin-bottom: 12px; display: none;
+    }
+    .admin-btn-row { display: flex; gap: 10px; }
+    .btn {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer;
+      transition: transform var(--tr), box-shadow var(--tr), opacity var(--tr);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: linear-gradient(90deg,var(--blue-mid),var(--blue-deep)); color: #fff; box-shadow: 0 4px 14px rgba(21,101,192,.3); }
+    .btn-ghost { background: var(--blue-pale); color: var(--blue-deep); }
+    .btn-danger { background: #fdecea; color: var(--red); }
+    .btn-gold { background: linear-gradient(90deg,var(--gold),#c9860a); color: var(--blue-deep); }
+    .btn-sm { padding: 7px 12px; font-size: 12px; flex: none; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    /* Bar admin global — fixed di bawah agar aksi selalu terjangkau di section manapun */
+    .admin-bar {
+      display: none;
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 350;
+      align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
+      background: linear-gradient(90deg,#7a5900,#c9a008);
+      color: #fff;
+      padding: 10px 18px calc(10px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -6px 20px rgba(0,0,0,.2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12.5px; font-weight: 600;
+    }
+    .admin-bar.show { display: flex; }
+    .admin-bar-label { white-space: nowrap; }
+    .admin-bar-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    @media (max-width: 600px) {
+      .admin-bar { bottom: 62px; font-size: 11.5px; padding: 8px 10px; }
+    }
+
+    .section-admin-actions {
+      display: none;
+      padding: 14px 22px;
+      border-top: 1px dashed var(--border);
+      gap: 8px; flex-wrap: wrap;
+    }
+    body.admin-mode .section-admin-actions { display: flex; }
+
+    .editable-field {
+      border: 1.5px dashed transparent;
+      border-radius: 6px;
+      padding: 2px 4px;
+      transition: border-color var(--tr), background var(--tr);
+      cursor: text;
+      outline: none;
+    }
+    body.admin-mode .editable-field {
+      border-color: rgba(21,101,192,.35);
+      background: rgba(66,165,245,.06);
+    }
+    body.admin-mode .editable-field:focus {
+      border-color: var(--blue-mid);
+      background: var(--blue-pale);
+    }
+
+    .req-item.admin-editing { position: relative; padding-right: 46px; }
+    .admin-del-btn {
+      display: none;
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      width: 26px; height: 26px; border-radius: 50%;
+      background: #fdecea; color: var(--red); border: none;
+      font-size: 14px; line-height: 1; cursor: pointer;
+      align-items: center; justify-content: center;
+    }
+    body.admin-mode .admin-del-btn { display: flex; }
+
+    .admin-toast {
+      position: fixed;
+      left: 50%; bottom: 24px;
+      transform: translate(-50%, 20px);
+      background: var(--blue-deep);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+    }
+    .admin-toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+
+    /* ── FAQ ── */
+    .faq-list { padding: 6px 0; }
+    .faq-item {
+      border-bottom: 1px solid var(--blue-pale);
+      position: relative;
+    }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 16px 22px;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--blue-deep);
+      user-select: none;
+    }
+    .faq-question .faq-q-text { flex: 1; }
+    .faq-toggle-icon {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--blue-mid);
+      font-size: 16px;
+      transition: transform var(--tr);
+    }
+    .faq-item.open .faq-toggle-icon { transform: rotate(45deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding var(--tr);
+      padding: 0 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px; line-height: 1.7; color: var(--text-mid);
+    }
+    .faq-item.open .faq-answer { padding: 0 22px 18px; }
+    body.admin-mode .faq-question { cursor: default; }
+    body.admin-mode .faq-item { padding-right: 40px; }
+
+    @media (max-width: 380px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .header-badges { gap: 6px; }
+    }
   </style>
 </head>
 <body>
@@ -504,6 +724,7 @@
     <a href="#alur"        class="nav-tab">🔄 Alur Daftar</a>
     <a href="#tatatertib"  class="nav-tab">📜 Tata Tertib</a>
     <a href="#sanksi"      class="nav-tab">⚠️ Sanksi</a>
+    <a href="#faq"         class="nav-tab">❓ FAQ</a>
   </div>
 </nav>
 
@@ -530,11 +751,25 @@
       <span class="mn-icon">⚠️</span>
       <span class="mn-label">Sanksi</span>
     </a>
+    <a href="#faq"         class="mobile-nav-btn" data-section="faq">
+      <span class="mn-icon">❓</span>
+      <span class="mn-label">FAQ</span>
+    </a>
   </div>
 </nav>
 
 <!-- ══════════ MAIN ══════════ -->
 <main>
+
+  <div class="admin-bar" id="adminBar">
+    <span class="admin-bar-label">🛠️ Mode Admin Aktif</span>
+    <div class="admin-bar-actions">
+      <button class="btn btn-gold btn-sm" id="btnSaveAdmin">💾 Simpan Semua</button>
+      <button class="btn btn-ghost btn-sm" id="btnChangePassword">🔑 Ganti Kata Sandi</button>
+      <button class="btn btn-ghost btn-sm" id="btnExitAdmin">🚪 Keluar</button>
+    </div>
+  </div>
+
 
   <!-- INFO UMUM -->
   <section class="section" id="info">
@@ -591,83 +826,16 @@
     </div>
     <div class="card">
       <div class="card-header-bar">📋 Berkas Administrasi yang Harus Diserahkan</div>
-      <div class="req-list">
-        <div class="req-item">
-          <div class="req-num">1</div>
-          <div>
-            <div class="req-text">Fotokopi Ijazah / Surat Keterangan Lulus (SKL) SMP/MTs atau sederajat</div>
-            <div class="req-note">Legalisir oleh kepala sekolah asal — 2 lembar</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">2</div>
-          <div>
-            <div class="req-text">Fotokopi Rapor SMP/MTs kelas 7, 8, dan semester 1 kelas 9</div>
-            <div class="req-note">Semua halaman, legalisir kepala sekolah — 1 rangkap</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">3</div>
-          <div>
-            <div class="req-text">Fotokopi Kartu Keluarga (KK)</div>
-            <div class="req-note">2 lembar</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">4</div>
-          <div>
-            <div class="req-text">Fotokopi Akta Kelahiran</div>
-            <div class="req-note">2 lembar</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">5</div>
-          <div>
-            <div class="req-text">Pas foto terbaru berwarna berlatar belakang merah</div>
-            <div class="req-note">Ukuran 3×4 sebanyak 6 lembar; mengenakan seragam SMP/sederajat</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">6</div>
-          <div>
-            <div class="req-text">Surat Keterangan Sehat dari dokter atau Puskesmas</div>
-            <div class="req-note">Tidak buta warna (khusus program TKJ), bebas narkoba</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">7</div>
-          <div>
-            <div class="req-text">Surat Keterangan Berkelakuan Baik dari kepala sekolah asal</div>
-            <div class="req-note">Asli, bermaterai Rp 10.000</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">8</div>
-          <div>
-            <div class="req-text">Fotokopi KTP orang tua / wali</div>
-            <div class="req-note">2 lembar</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">9</div>
-          <div>
-            <div class="req-text">Surat pernyataan orang tua/wali sanggup menaati tata tertib sekolah</div>
-            <div class="req-note">Bermaterai Rp 10.000, ditandatangani calon siswa dan orang tua/wali</div>
-          </div>
-        </div>
-        <div class="req-item">
-          <div class="req-num">10</div>
-          <div>
-            <div class="req-text">Formulir pendaftaran yang telah diisi lengkap</div>
-            <div class="req-note">Tersedia di Tata Usaha atau dapat diunduh di website sekolah</div>
-          </div>
-        </div>
+      <div class="req-list" id="reqList" aria-live="polite"></div>
+      <div class="section-admin-actions">
+        <button class="btn btn-primary btn-sm" id="btnAddReq" type="button">➕ Tambah Persyaratan</button>
+        <button class="btn btn-danger btn-sm" id="btnResetReq" type="button">🔄 Reset Persyaratan ke Bawaan</button>
       </div>
     </div>
     <div class="alert alert-warning">
       <div class="alert-icon">⚠️</div>
-      <div class="alert-text">
-        <strong>Persyaratan Khusus:</strong> Calon siswa berusia maksimal 21 tahun pada saat awal tahun pelajaran. Calon siswa bersedia mengikuti kegiatan pesantren dan keagamaan yang diselenggarakan oleh sekolah.
+      <div class="alert-text" id="specialReqWrap">
+        <strong>Persyaratan Khusus:</strong> <span id="specialReqText" class="editable-field" contenteditable="false">Calon siswa berusia maksimal 21 tahun pada saat awal tahun pelajaran. Calon siswa bersedia mengikuti kegiatan pesantren dan keagamaan yang diselenggarakan oleh sekolah.</span>
       </div>
     </div>
   </section>
@@ -874,6 +1042,29 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-header">
+      <div class="section-icon">❓</div>
+      <div>
+        <div class="section-title">Pertanyaan yang Sering Diajukan</div>
+        <div class="section-desc">Jawaban singkat seputar Penerimaan Siswa Baru</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header-bar">💬 FAQ Pendaftaran</div>
+      <div class="faq-list" id="faqList" aria-live="polite"></div>
+      <div class="section-admin-actions">
+        <button class="btn btn-primary btn-sm" id="btnAddFaq" type="button">➕ Tambah FAQ</button>
+        <button class="btn btn-danger btn-sm" id="btnResetFaq" type="button">🔄 Reset FAQ ke Bawaan</button>
+      </div>
+    </div>
+    <div class="alert alert-info" style="margin-top:16px;">
+      <div class="alert-icon">ℹ️</div>
+      <div class="alert-text">Tidak menemukan jawaban yang dicari? Hubungi Tata Usaha sekolah di nomor yang tertera pada bagian Info Umum.</div>
+    </div>
+  </section>
+
 </main>
 
 <!-- ══════════ FOOTER ══════════ -->
@@ -884,6 +1075,39 @@
   Jl. Mayor Syamsu No. 02 Jayaraga, Tarogong Kidul, Garut, Jawa Barat<br>
   <span style="font-size:11.5px;color:rgba(255,255,255,.4);">Dokumen ini diterbitkan untuk keperluan Penerimaan Siswa Baru — TP 2026/2027</span>
 </footer>
+
+<!-- ══════════ ADMIN: FAB + MODAL ══════════ -->
+<button class="admin-fab" id="adminFab" title="Mode Admin" type="button">🔐</button>
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-modal">
+    <h3>Login Admin</h3>
+    <p>Masuk untuk memperbarui data Persyaratan &amp; FAQ. Perubahan disimpan di penyimpanan lokal perangkat/browser ini.</p>
+    <div class="admin-lock-notice" id="adminLockNotice"></div>
+    <div class="admin-error" id="adminError">Kata sandi salah, coba lagi.</div>
+    <input type="password" id="adminPassword" placeholder="Masukkan kata sandi admin" autocomplete="off" />
+    <div class="admin-btn-row">
+      <button class="btn btn-ghost" id="btnCancelAdmin" type="button">Batal</button>
+      <button class="btn btn-primary" id="btnLoginAdmin" type="button">Masuk</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-overlay" id="changePasswordOverlay">
+  <div class="admin-modal">
+    <h3>Ganti Kata Sandi Admin</h3>
+    <p>Minimal 6 karakter. Kata sandi baru langsung berlaku di perangkat/browser ini.</p>
+    <div class="admin-error" id="changePasswordError">Kata sandi tidak cocok atau terlalu pendek (min. 6 karakter).</div>
+    <input type="password" id="newPassword1" placeholder="Kata sandi baru" autocomplete="new-password" />
+    <input type="password" id="newPassword2" placeholder="Ulangi kata sandi baru" autocomplete="new-password" />
+    <div class="admin-btn-row">
+      <button class="btn btn-ghost" id="btnCancelChangePassword" type="button">Batal</button>
+      <button class="btn btn-primary" id="btnSaveChangePassword" type="button">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-toast" id="adminToast"></div>
 
 <script>
   // Sinkronisasi active state untuk nav desktop & mobile
@@ -916,6 +1140,521 @@
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  /* ══════════════════════════════════════════════════════════
+     ADMIN MODE — kelola data Persyaratan & FAQ
+     Data disimpan di localStorage browser (khusus perangkat ini).
+     Keamanan:
+       - Kata sandi TIDAK disimpan sebagai teks biasa, hanya hash SHA-256-nya.
+       - Percobaan login dibatasi (rate limit) dengan penguncian sementara
+         yang bertambah lama setiap gagal berulang (mitigasi brute-force).
+       - Sesi admin otomatis keluar setelah tidak ada aktivitas (idle timeout).
+       - Admin bisa mengganti kata sandi sendiri lewat menu "Ganti Kata Sandi".
+     Catatan: ini tetap proteksi sisi-klien (tanpa server), memadai untuk
+     mencegah pengunjung biasa/otomatis mengubah data, tapi bukan pengganti
+     autentikasi server sungguhan untuk data yang benar-benar sensitif.
+  ══════════════════════════════════════════════════════════ */
+  (function () {
+    // Hash SHA-256 dari kata sandi bawaan "admin123". Untuk mengganti kata sandi
+    // bawaan lewat kode (bukan lewat menu "Ganti Kata Sandi"), hitung hash baru,
+    // misalnya di console browser: crypto.subtle.digest('SHA-256', new TextEncoder().encode('kata-sandi-baru'))
+    const DEFAULT_PASSWORD_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+
+    const HASH_KEY          = 'smks_psb_admin_hash_v1';
+    const REQ_STORAGE_KEY    = 'smks_psb_persyaratan_v1';
+    const FAQ_STORAGE_KEY    = 'smks_psb_faq_v1';
+    const SESSION_FLAG_KEY   = 'smks_psb_admin_session';
+    const LAST_ACTIVITY_KEY  = 'smks_psb_admin_last_activity';
+    const FAIL_COUNT_KEY     = 'smks_psb_admin_fail_count';
+    const LOCK_UNTIL_KEY     = 'smks_psb_admin_lock_until';
+
+    const IDLE_TIMEOUT_MS      = 10 * 60 * 1000; // 10 menit tanpa aktivitas -> auto logout
+    const IDLE_CHECK_INTERVAL  = 15 * 1000;
+    const BASE_LOCK_MS         = 20 * 1000;       // penguncian awal 20 detik
+    const MAX_LOCK_MS          = 5 * 60 * 1000;   // maksimum penguncian 5 menit
+    const ATTEMPTS_BEFORE_LOCK = 3;                // kunci setelah 3x gagal berturut-turut
+
+    const DEFAULT_REQ_DATA = {
+      items: [
+        { text: 'Fotokopi Ijazah / Surat Keterangan Lulus (SKL) SMP/MTs atau sederajat', note: 'Legalisir oleh kepala sekolah asal — 2 lembar' },
+        { text: 'Fotokopi Rapor SMP/MTs kelas 7, 8, dan semester 1 kelas 9', note: 'Semua halaman, legalisir kepala sekolah — 1 rangkap' },
+        { text: 'Fotokopi Kartu Keluarga (KK)', note: '2 lembar' },
+        { text: 'Fotokopi Akta Kelahiran', note: '2 lembar' },
+        { text: 'Pas foto terbaru berwarna berlatar belakang merah', note: 'Ukuran 3×4 sebanyak 6 lembar; mengenakan seragam SMP/sederajat' },
+        { text: 'Surat Keterangan Sehat dari dokter atau Puskesmas', note: 'Tidak buta warna (khusus program TKJ), bebas narkoba' },
+        { text: 'Surat Keterangan Berkelakuan Baik dari kepala sekolah asal', note: 'Asli, bermaterai Rp 10.000' },
+        { text: 'Fotokopi KTP orang tua / wali', note: '2 lembar' },
+        { text: 'Surat pernyataan orang tua/wali sanggup menaati tata tertib sekolah', note: 'Bermaterai Rp 10.000, ditandatangani calon siswa dan orang tua/wali' },
+        { text: 'Formulir pendaftaran yang telah diisi lengkap', note: 'Tersedia di Tata Usaha atau dapat diunduh di website sekolah' }
+      ],
+      specialNote: 'Calon siswa berusia maksimal 21 tahun pada saat awal tahun pelajaran. Calon siswa bersedia mengikuti kegiatan pesantren dan keagamaan yang diselenggarakan oleh sekolah.'
+    };
+
+    const DEFAULT_FAQ_DATA = {
+      items: [
+        { q: 'Apakah pendaftaran bisa dilakukan secara online?', a: 'Saat ini pendaftaran dilakukan secara langsung (offline) di Tata Usaha sekolah. Formulir pendaftaran dapat diunduh terlebih dahulu dari website untuk diisi di rumah agar lebih cepat.' },
+        { q: 'Bagaimana jika berkas persyaratan belum lengkap saat mendaftar?', a: 'Berkas tetap dapat diserahkan sebagian, namun kelulusan sebagai siswa baru baru dinyatakan sah setelah seluruh berkas dilengkapi maksimal pada saat daftar ulang.' },
+        { q: 'Apakah tersedia beasiswa atau keringanan biaya?', a: 'Sekolah menyediakan program keringanan biaya bagi siswa berprestasi dan siswa dari keluarga kurang mampu (melampirkan surat keterangan tidak mampu). Silakan tanyakan langsung ke Tata Usaha untuk informasi lebih lanjut.' },
+        { q: 'Apakah siswa non-muslim dapat mendaftar di sekolah ini?', a: 'Sekolah berbasis pesantren dan seluruh kegiatan keagamaan yang diselenggarakan bersifat Islami. Calon siswa non-muslim yang berminat mendaftar disarankan berkonsultasi langsung dengan pihak sekolah terlebih dahulu.' },
+        { q: 'Apa yang terjadi jika calon siswa tidak lulus tes seleksi?', a: 'Calon siswa yang belum lulus seleksi dapat berkonsultasi dengan panitia PSB mengenai kemungkinan gelombang pendaftaran berikutnya, selama kuota kelas masih tersedia.' },
+        { q: 'Apakah biaya pendaftaran dapat dikembalikan jika mengundurkan diri?', a: 'Biaya pendaftaran bersifat tidak dapat dikembalikan (non-refundable), sebagaimana tercantum pada bagian Info Umum.' },
+        { q: 'Apa saja yang perlu dibawa saat mengikuti tes seleksi?', a: 'Calon siswa wajib membawa alat tulis, kartu bukti pendaftaran, serta berpakaian rapi dan sopan sesuai ketentuan sekolah.' },
+        { q: 'Bagaimana jika mendaftar melewati periode yang ditentukan?', a: 'Pendaftaran susulan dapat dipertimbangkan selama kuota kelas per program keahlian belum terpenuhi. Silakan hubungi Tata Usaha untuk mengecek ketersediaan kuota terkini.' }
+      ]
+    };
+
+    const el = {
+      fab: document.getElementById('adminFab'),
+      overlay: document.getElementById('adminOverlay'),
+      password: document.getElementById('adminPassword'),
+      error: document.getElementById('adminError'),
+      lockNotice: document.getElementById('adminLockNotice'),
+      btnLogin: document.getElementById('btnLoginAdmin'),
+      btnCancel: document.getElementById('btnCancelAdmin'),
+      adminBar: document.getElementById('adminBar'),
+      btnSave: document.getElementById('btnSaveAdmin'),
+      btnChangePassword: document.getElementById('btnChangePassword'),
+      btnExit: document.getElementById('btnExitAdmin'),
+      reqList: document.getElementById('reqList'),
+      btnAddReq: document.getElementById('btnAddReq'),
+      btnResetReq: document.getElementById('btnResetReq'),
+      specialText: document.getElementById('specialReqText'),
+      faqList: document.getElementById('faqList'),
+      btnAddFaq: document.getElementById('btnAddFaq'),
+      btnResetFaq: document.getElementById('btnResetFaq'),
+      toast: document.getElementById('adminToast'),
+      cpOverlay: document.getElementById('changePasswordOverlay'),
+      cpError: document.getElementById('changePasswordError'),
+      cpPass1: document.getElementById('newPassword1'),
+      cpPass2: document.getElementById('newPassword2'),
+      btnCpSave: document.getElementById('btnSaveChangePassword'),
+      btnCpCancel: document.getElementById('btnCancelChangePassword')
+    };
+
+    let reqData = loadJson(REQ_STORAGE_KEY, DEFAULT_REQ_DATA, isValidReqData);
+    let faqData = loadJson(FAQ_STORAGE_KEY, DEFAULT_FAQ_DATA, isValidFaqData);
+    let isAdmin = false;
+    let idleTimer = null;
+
+    // ── Util ──
+    function isValidReqData(d) {
+      return d && Array.isArray(d.items) && typeof d.specialNote === 'string';
+    }
+    function isValidFaqData(d) {
+      return d && Array.isArray(d.items);
+    }
+    function loadJson(key, fallback, validator) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return structuredCloneSafe(fallback);
+        const parsed = JSON.parse(raw);
+        if (!validator(parsed)) return structuredCloneSafe(fallback);
+        return parsed;
+      } catch (e) {
+        console.warn('Gagal membaca data tersimpan untuk ' + key + ', memakai data bawaan.', e);
+        return structuredCloneSafe(fallback);
+      }
+    }
+    function structuredCloneSafe(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+    function saveAll() {
+      try {
+        localStorage.setItem(REQ_STORAGE_KEY, JSON.stringify(reqData));
+        localStorage.setItem(FAQ_STORAGE_KEY, JSON.stringify(faqData));
+        return true;
+      } catch (e) {
+        console.error('Gagal menyimpan data admin.', e);
+        showToast('⚠️ Gagal menyimpan (penyimpanan browser penuh/diblokir).');
+        return false;
+      }
+    }
+
+    function showToast(msg) {
+      el.toast.textContent = msg;
+      el.toast.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => el.toast.classList.remove('show'), 2600);
+    }
+
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str == null ? '' : str;
+      return d.innerHTML;
+    }
+
+    async function sha256Hex(text) {
+      const enc = new TextEncoder().encode(text);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function getStoredHash() {
+      try {
+        return localStorage.getItem(HASH_KEY) || DEFAULT_PASSWORD_HASH;
+      } catch (e) {
+        return DEFAULT_PASSWORD_HASH;
+      }
+    }
+
+    // ── Rate limit / lockout ──
+    function getFailState() {
+      let count = 0, until = 0;
+      try {
+        count = parseInt(localStorage.getItem(FAIL_COUNT_KEY) || '0', 10) || 0;
+        until = parseInt(localStorage.getItem(LOCK_UNTIL_KEY) || '0', 10) || 0;
+      } catch (e) {}
+      return { count, until };
+    }
+    function setFailState(count, until) {
+      try {
+        localStorage.setItem(FAIL_COUNT_KEY, String(count));
+        localStorage.setItem(LOCK_UNTIL_KEY, String(until));
+      } catch (e) {}
+    }
+    function clearFailState() { setFailState(0, 0); }
+
+    function currentLockRemainingMs() {
+      const { until } = getFailState();
+      return Math.max(0, until - Date.now());
+    }
+
+    function registerFailedAttempt() {
+      let { count } = getFailState();
+      count += 1;
+      let until = 0;
+      if (count >= ATTEMPTS_BEFORE_LOCK) {
+        // Lockout eksponensial: makin sering gagal, makin lama dikunci (sampai batas maksimum)
+        const extraLocks = count - ATTEMPTS_BEFORE_LOCK;
+        const lockDuration = Math.min(BASE_LOCK_MS * Math.pow(2, extraLocks), MAX_LOCK_MS);
+        until = Date.now() + lockDuration;
+      }
+      setFailState(count, until);
+      return until;
+    }
+
+    let lockCountdownTimer = null;
+    function updateLockUI() {
+      const remaining = currentLockRemainingMs();
+      if (remaining > 0) {
+        const secs = Math.ceil(remaining / 1000);
+        el.lockNotice.style.display = 'block';
+        el.lockNotice.textContent = `🔒 Terlalu banyak percobaan gagal. Coba lagi dalam ${secs} detik.`;
+        el.password.disabled = true;
+        el.btnLogin.disabled = true;
+        clearTimeout(lockCountdownTimer);
+        lockCountdownTimer = setTimeout(updateLockUI, 1000);
+      } else {
+        el.lockNotice.style.display = 'none';
+        el.password.disabled = false;
+        el.btnLogin.disabled = false;
+        clearTimeout(lockCountdownTimer);
+      }
+    }
+
+    // ── Sanitasi paste pada kolom edit (cegah HTML/skrip ikut tertempel) ──
+    document.addEventListener('paste', (e) => {
+      const t = e.target;
+      if (t && t.classList && t.classList.contains('editable-field')) {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        const sel = window.getSelection();
+        if (!sel || !sel.rangeCount) return;
+        sel.deleteFromDocument();
+        const range = sel.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(document.createTextNode(text));
+        range.collapse(false);
+      }
+    });
+
+    // ── Render: Persyaratan ──
+    function renderReq() {
+      el.reqList.innerHTML = reqData.items.map((item, i) => `
+        <div class="req-item${isAdmin ? ' admin-editing' : ''}" data-idx="${i}">
+          <div class="req-num">${i + 1}</div>
+          <div style="flex:1;">
+            <div class="req-text editable-field" contenteditable="${isAdmin}" data-field="text" data-idx="${i}">${escapeHtml(item.text)}</div>
+            <div class="req-note editable-field" contenteditable="${isAdmin}" data-field="note" data-idx="${i}">${escapeHtml(item.note)}</div>
+          </div>
+          ${isAdmin ? `<button class="admin-del-btn" type="button" data-del-req="${i}" title="Hapus persyaratan ini">✕</button>` : ''}
+        </div>
+      `).join('');
+
+      el.specialText.textContent = reqData.specialNote;
+      el.specialText.setAttribute('contenteditable', isAdmin ? 'true' : 'false');
+
+      if (isAdmin) {
+        el.reqList.querySelectorAll('.editable-field').forEach(field => {
+          field.addEventListener('input', onReqFieldInput);
+        });
+        el.reqList.querySelectorAll('[data-del-req]').forEach(btn => {
+          btn.addEventListener('click', onDeleteReqItem);
+        });
+        el.specialText.addEventListener('input', onSpecialInput);
+      }
+    }
+    function onReqFieldInput(e) {
+      const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+      const field = e.target.getAttribute('data-field');
+      if (Number.isInteger(idx) && reqData.items[idx] && (field === 'text' || field === 'note')) {
+        reqData.items[idx][field] = e.target.textContent.trim();
+      }
+    }
+    function onSpecialInput(e) { reqData.specialNote = e.target.textContent.trim(); }
+    function onDeleteReqItem(e) {
+      const idx = parseInt(e.currentTarget.getAttribute('data-del-req'), 10);
+      if (!Number.isInteger(idx)) return;
+      if (reqData.items.length <= 1) { showToast('⚠️ Minimal harus ada 1 persyaratan.'); return; }
+      if (confirm('Hapus persyaratan ini?')) { reqData.items.splice(idx, 1); renderReq(); }
+    }
+    function addReqItem() {
+      reqData.items.push({ text: 'Persyaratan baru — klik untuk mengedit', note: 'Keterangan tambahan (opsional)' });
+      renderReq();
+      focusLastEditable(el.reqList, '.req-text');
+    }
+
+    // ── Render: FAQ ──
+    function renderFaq() {
+      el.faqList.innerHTML = faqData.items.map((item, i) => `
+        <div class="faq-item" data-idx="${i}">
+          <div class="faq-question" data-toggle="${i}">
+            <div class="faq-q-text editable-field" contenteditable="${isAdmin}" data-field="q" data-idx="${i}">${escapeHtml(item.q)}</div>
+            <div class="faq-toggle-icon">＋</div>
+            ${isAdmin ? `<button class="admin-del-btn" type="button" style="position:static;margin-left:4px;" data-del-faq="${i}" title="Hapus FAQ ini">✕</button>` : ''}
+          </div>
+          <div class="faq-answer">
+            <div class="editable-field" contenteditable="${isAdmin}" data-field="a" data-idx="${i}">${escapeHtml(item.a)}</div>
+          </div>
+        </div>
+      `).join('');
+
+      el.faqList.querySelectorAll('[data-toggle]').forEach(qEl => {
+        qEl.addEventListener('click', (e) => {
+          // Jangan toggle buka/tutup jika admin sedang mengklik untuk mengedit teks atau menghapus
+          if (isAdmin && (e.target.classList.contains('editable-field') || e.target.closest('.editable-field') || e.target.hasAttribute('data-del-faq'))) return;
+          const item = qEl.closest('.faq-item');
+          item.classList.toggle('open');
+        });
+      });
+
+      if (isAdmin) {
+        el.faqList.querySelectorAll('.editable-field').forEach(field => {
+          field.addEventListener('input', onFaqFieldInput);
+        });
+        el.faqList.querySelectorAll('[data-del-faq]').forEach(btn => {
+          btn.addEventListener('click', onDeleteFaqItem);
+        });
+      }
+    }
+    function onFaqFieldInput(e) {
+      const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+      const field = e.target.getAttribute('data-field');
+      if (Number.isInteger(idx) && faqData.items[idx] && (field === 'q' || field === 'a')) {
+        faqData.items[idx][field] = e.target.textContent.trim();
+      }
+    }
+    function onDeleteFaqItem(e) {
+      e.stopPropagation();
+      const idx = parseInt(e.currentTarget.getAttribute('data-del-faq'), 10);
+      if (!Number.isInteger(idx)) return;
+      if (faqData.items.length <= 1) { showToast('⚠️ Minimal harus ada 1 FAQ.'); return; }
+      if (confirm('Hapus FAQ ini?')) { faqData.items.splice(idx, 1); renderFaq(); }
+    }
+    function addFaqItem() {
+      faqData.items.push({ q: 'Pertanyaan baru — klik untuk mengedit', a: 'Jawaban untuk pertanyaan ini (opsional diisi).' });
+      renderFaq();
+      const items = el.faqList.querySelectorAll('.faq-item');
+      const lastItem = items[items.length - 1];
+      if (lastItem) lastItem.classList.add('open');
+      focusLastEditable(el.faqList, '.faq-q-text');
+    }
+
+    function focusLastEditable(container, selector) {
+      const nodes = container.querySelectorAll(selector);
+      const target = nodes[nodes.length - 1];
+      if (target) {
+        target.focus();
+        const sel = document.getSelection();
+        if (sel) sel.selectAllChildren(target);
+        if (typeof target.scrollIntoView === 'function') {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+
+    function renderAll() { renderReq(); renderFaq(); }
+
+    // ── Idle timeout ──
+    function touchActivity() {
+      if (!isAdmin) return;
+      try { sessionStorage.setItem(LAST_ACTIVITY_KEY, String(Date.now())); } catch (e) {}
+    }
+    function startIdleWatcher() {
+      touchActivity();
+      ['click', 'keydown', 'input', 'scroll'].forEach(evt => document.addEventListener(evt, touchActivity, { passive: true }));
+      clearInterval(idleTimer);
+      idleTimer = setInterval(() => {
+        if (!isAdmin) return;
+        let last = 0;
+        try { last = parseInt(sessionStorage.getItem(LAST_ACTIVITY_KEY) || '0', 10) || 0; } catch (e) {}
+        if (last && Date.now() - last > IDLE_TIMEOUT_MS) {
+          exitAdminMode();
+          showToast('⏱️ Sesi admin berakhir karena tidak ada aktivitas. Silakan login kembali.');
+        }
+      }, IDLE_CHECK_INTERVAL);
+    }
+    function stopIdleWatcher() {
+      clearInterval(idleTimer);
+      ['click', 'keydown', 'input', 'scroll'].forEach(evt => document.removeEventListener(evt, touchActivity));
+    }
+
+    // ── Mode admin: masuk/keluar ──
+    function enterAdminMode() {
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      el.adminBar.classList.add('show');
+      el.fab.classList.add('is-admin');
+      el.fab.textContent = '🔓';
+      el.fab.title = 'Admin aktif — klik untuk keluar';
+      try { sessionStorage.setItem(SESSION_FLAG_KEY, '1'); } catch (e) {}
+      startIdleWatcher();
+      renderAll();
+    }
+    function exitAdminMode() {
+      isAdmin = false;
+      document.body.classList.remove('admin-mode');
+      el.adminBar.classList.remove('show');
+      el.fab.classList.remove('is-admin');
+      el.fab.textContent = '🔐';
+      el.fab.title = 'Mode Admin';
+      try { sessionStorage.removeItem(SESSION_FLAG_KEY); } catch (e) {}
+      stopIdleWatcher();
+      renderAll();
+    }
+
+    // ── Modal login ──
+    function openLoginModal() {
+      el.overlay.classList.add('open');
+      el.error.style.display = 'none';
+      el.password.value = '';
+      updateLockUI();
+      if (currentLockRemainingMs() <= 0) setTimeout(() => el.password.focus(), 50);
+    }
+    function closeLoginModal() { el.overlay.classList.remove('open'); }
+
+    async function attemptLogin() {
+      if (currentLockRemainingMs() > 0) { updateLockUI(); return; }
+      el.btnLogin.disabled = true;
+      try {
+        const entered = el.password.value;
+        const enteredHash = await sha256Hex(entered);
+        if (enteredHash === getStoredHash()) {
+          clearFailState();
+          closeLoginModal();
+          enterAdminMode();
+          showToast('✅ Mode admin aktif.');
+        } else {
+          const until = registerFailedAttempt();
+          el.error.style.display = 'block';
+          el.password.value = '';
+          if (until > 0) { updateLockUI(); } else { el.password.focus(); }
+        }
+      } catch (err) {
+        console.error('Gagal memverifikasi kata sandi (Web Crypto tidak tersedia).', err);
+        el.error.textContent = 'Login gagal: browser ini tidak mendukung verifikasi aman. Gunakan browser modern (Chrome/Edge/Safari/Firefox terbaru) melalui koneksi HTTPS.';
+        el.error.style.display = 'block';
+      } finally {
+        el.btnLogin.disabled = currentLockRemainingMs() > 0;
+      }
+    }
+
+    // ── Modal ganti kata sandi ──
+    function openChangePasswordModal() {
+      el.cpOverlay.classList.add('open');
+      el.cpError.style.display = 'none';
+      el.cpPass1.value = ''; el.cpPass2.value = '';
+      setTimeout(() => el.cpPass1.focus(), 50);
+    }
+    function closeChangePasswordModal() { el.cpOverlay.classList.remove('open'); }
+    async function saveNewPassword() {
+      const p1 = el.cpPass1.value, p2 = el.cpPass2.value;
+      if (p1.length < 6 || p1 !== p2) {
+        el.cpError.style.display = 'block';
+        return;
+      }
+      try {
+        const hash = await sha256Hex(p1);
+        localStorage.setItem(HASH_KEY, hash);
+        closeChangePasswordModal();
+        showToast('🔑 Kata sandi admin berhasil diganti.');
+      } catch (err) {
+        console.error(err);
+        el.cpError.textContent = 'Gagal mengganti kata sandi di browser ini.';
+        el.cpError.style.display = 'block';
+      }
+    }
+
+    // ── Event bindings ──
+    el.fab.addEventListener('click', () => { isAdmin ? exitAdminMode() : openLoginModal(); });
+    el.btnCancel.addEventListener('click', closeLoginModal);
+    el.overlay.addEventListener('click', (e) => { if (e.target === el.overlay) closeLoginModal(); });
+    el.btnLogin.addEventListener('click', attemptLogin);
+    el.password.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptLogin(); });
+
+    el.btnAddReq.addEventListener('click', addReqItem);
+    el.btnResetReq.addEventListener('click', () => {
+      if (confirm('Kembalikan data Persyaratan ke versi bawaan? Perubahan tersimpan akan hilang.')) {
+        reqData = structuredCloneSafe(DEFAULT_REQ_DATA);
+        localStorage.removeItem(REQ_STORAGE_KEY);
+        renderReq();
+        showToast('🔄 Persyaratan dikembalikan ke bawaan.');
+      }
+    });
+
+    el.btnAddFaq.addEventListener('click', addFaqItem);
+    el.btnResetFaq.addEventListener('click', () => {
+      if (confirm('Kembalikan data FAQ ke versi bawaan? Perubahan tersimpan akan hilang.')) {
+        faqData = structuredCloneSafe(DEFAULT_FAQ_DATA);
+        localStorage.removeItem(FAQ_STORAGE_KEY);
+        renderFaq();
+        showToast('🔄 FAQ dikembalikan ke bawaan.');
+      }
+    });
+
+    el.btnSave.addEventListener('click', () => {
+      if (saveAll()) showToast('💾 Semua perubahan tersimpan di perangkat ini.');
+    });
+    el.btnExit.addEventListener('click', () => { exitAdminMode(); showToast('🚪 Keluar dari mode admin.'); });
+
+    el.btnChangePassword.addEventListener('click', openChangePasswordModal);
+    el.btnCpCancel.addEventListener('click', closeChangePasswordModal);
+    el.cpOverlay.addEventListener('click', (e) => { if (e.target === el.cpOverlay) closeChangePasswordModal(); });
+    el.btnCpSave.addEventListener('click', saveNewPassword);
+    el.cpPass2.addEventListener('keydown', (e) => { if (e.key === 'Enter') saveNewPassword(); });
+
+    // Cegah Enter membuat baris baru aneh di kolom satu-baris (req-text/note/faq-question)
+    document.addEventListener('keydown', (e) => {
+      if (isAdmin && e.key === 'Enter' && e.target.classList && e.target.classList.contains('editable-field') && e.target.id !== 'specialReqText' && e.target.getAttribute('data-field') !== 'a') {
+        e.preventDefault();
+        e.target.blur();
+      }
+    });
+
+    // Render awal (mode publik/non-admin)
+    renderAll();
+
+    // Pulihkan sesi admin bila sebelumnya aktif di tab yang sama, DAN belum idle-timeout
+    try {
+      if (sessionStorage.getItem(SESSION_FLAG_KEY) === '1') {
+        const last = parseInt(sessionStorage.getItem(LAST_ACTIVITY_KEY) || '0', 10) || 0;
+        if (last && Date.now() - last <= IDLE_TIMEOUT_MS) {
+          enterAdminMode();
+        } else {
+          sessionStorage.removeItem(SESSION_FLAG_KEY);
+        }
+      }
+    } catch (e) {}
+  })();
 </script>
 
 </body>
