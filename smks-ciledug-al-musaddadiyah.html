@@ -931,7 +931,7 @@
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-modal">
     <h3>Login Admin</h3>
-    <p>Masuk untuk memperbarui seluruh konten halaman: Info Umum, Persyaratan, Alur Pendaftaran, Tata Tertib, Sanksi &amp; Penghargaan, dan FAQ. Perubahan disimpan di penyimpanan lokal perangkat/browser ini.</p>
+    <p>Masuk untuk memperbarui seluruh konten halaman: Info Umum, Persyaratan, Alur Pendaftaran, Tata Tertib, Sanksi &amp; Penghargaan, dan FAQ. Bila backend Google Sheets sudah dikonfigurasi, perubahan disimpan ke server dan terlihat oleh semua pengunjung; sebagai cadangan, perubahan juga tetap tersimpan di penyimpanan lokal perangkat ini.</p>
     <div class="admin-lock-notice" id="adminLockNotice"></div>
     <div class="admin-error" id="adminError">Kata sandi salah, coba lagi.</div>
     <input type="password" id="adminPassword" placeholder="Masukkan kata sandi admin" autocomplete="off" />
@@ -991,23 +991,70 @@
   });
 
   /* ══════════════════════════════════════════════════════════
-     ADMIN MODE — kelola data Persyaratan & FAQ
-     Data disimpan di localStorage browser (khusus perangkat ini).
+     ADMIN MODE — kelola data Info, Persyaratan, Alur, Tata Tertib, Sanksi & FAQ
+     Data selalu di-cache di localStorage browser (agar tampilan tetap instan &
+     tetap berfungsi offline), dan bila BACKEND_URL dikonfigurasi (lihat Code.gs +
+     PANDUAN-BACKEND.md), data juga disimpan bersama di Google Sheets sehingga
+     perubahan admin terlihat oleh SEMUA pengunjung, bukan cuma satu perangkat.
      Keamanan:
        - Kata sandi TIDAK disimpan sebagai teks biasa, hanya hash SHA-256-nya.
-       - Percobaan login dibatasi (rate limit) dengan penguncian sementara
-         yang bertambah lama setiap gagal berulang (mitigasi brute-force).
+       - Saat backend aktif, verifikasi login & otorisasi SIMPAN/GANTI KATA SANDI
+         divalidasi ulang di SERVER (Apps Script) — bukan cuma di browser — sehingga
+         tidak bisa dibobol lewat console/devtools untuk menulis ke Google Sheets.
+       - Percobaan login/simpan dibatasi (rate limit) dengan penguncian sementara
+         yang bertambah lama setiap gagal berulang (mitigasi brute-force), diterapkan
+         baik di klien maupun di server.
        - Sesi admin otomatis keluar setelah tidak ada aktivitas (idle timeout).
        - Admin bisa mengganti kata sandi sendiri lewat menu "Ganti Kata Sandi".
-     Catatan: ini tetap proteksi sisi-klien (tanpa server), memadai untuk
-     mencegah pengunjung biasa/otomatis mengubah data, tapi bukan pengganti
-     autentikasi server sungguhan untuk data yang benar-benar sensitif.
+     Catatan: bila BACKEND_URL dibiarkan kosong, situs berjalan seperti sebelumnya
+     (proteksi sisi-klien saja) — cukup untuk mencegah pengunjung biasa, tapi bukan
+     pengganti autentikasi server untuk data benar-benar sensitif.
   ══════════════════════════════════════════════════════════ */
   (function () {
     // Hash SHA-256 dari kata sandi bawaan "admin123". Untuk mengganti kata sandi
     // bawaan lewat kode (bukan lewat menu "Ganti Kata Sandi"), hitung hash baru,
     // misalnya di console browser: crypto.subtle.digest('SHA-256', new TextEncoder().encode('kata-sandi-baru'))
     const DEFAULT_PASSWORD_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+
+    // ══════════ BACKEND GOOGLE SHEETS (Apps Script) ══════════
+    // Tempel URL Web App hasil deploy Apps Script (lihat file Code.gs & PANDUAN-BACKEND.md)
+    // di antara tanda kutip di bawah ini. Jika dibiarkan kosong '', situs tetap berjalan
+    // normal seperti sebelumnya (hanya localStorage per-perangkat) — tidak ada yang rusak.
+    const BACKEND_URL = '';
+    let sessionPasswordHash = null; // hash kata sandi admin selama sesi ini, dipakai utk otorisasi simpan ke server
+
+    function isBackendConfigured() {
+      return typeof BACKEND_URL === 'string' && BACKEND_URL.trim().length > 0;
+    }
+    async function backendCall(action, extra) {
+      if (!isBackendConfigured()) return { ok: false, offline: true };
+      try {
+        const res = await fetch(BACKEND_URL, {
+          method: 'POST',
+          // text/plain dipakai agar browser TIDAK mengirim preflight OPTIONS
+          // (Apps Script Web App tidak menangani preflight CORS).
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(Object.assign({ action }, extra || {}))
+        });
+        if (!res.ok) return { ok: false, offline: true };
+        return await res.json();
+      } catch (e) {
+        console.warn('Backend tidak dapat dihubungi, memakai mode lokal.', e);
+        return { ok: false, offline: true };
+      }
+    }
+    async function backendFetchData() {
+      if (!isBackendConfigured()) return null;
+      try {
+        const res = await fetch(BACKEND_URL + '?action=data', { method: 'GET' });
+        if (!res.ok) return null;
+        const json = await res.json();
+        return (json && json.ok && json.data) ? json.data : null;
+      } catch (e) {
+        console.warn('Gagal memuat data dari server, memakai data lokal/bawaan.', e);
+        return null;
+      }
+    }
 
     const HASH_KEY          = 'smks_psb_admin_hash_v1';
     const REQ_STORAGE_KEY    = 'smks_psb_persyaratan_v1';
@@ -1762,22 +1809,53 @@
     }
     function closeLoginModal() { el.overlay.classList.remove('open'); }
 
+    function finishLoginLocally_(enteredHash) {
+      if (enteredHash === getStoredHash()) {
+        clearFailState();
+        sessionPasswordHash = enteredHash;
+        closeLoginModal();
+        enterAdminMode();
+        showToast(isBackendConfigured()
+          ? '✅ Mode admin aktif (offline — server tidak terjangkau, verifikasi lokal).'
+          : '✅ Mode admin aktif.');
+      } else {
+        const until = registerFailedAttempt();
+        el.error.style.display = 'block';
+        el.password.value = '';
+        if (until > 0) { updateLockUI(); } else { el.password.focus(); }
+      }
+    }
+
     async function attemptLogin() {
       if (currentLockRemainingMs() > 0) { updateLockUI(); return; }
       el.btnLogin.disabled = true;
       try {
         const entered = el.password.value;
         const enteredHash = await sha256Hex(entered);
-        if (enteredHash === getStoredHash()) {
-          clearFailState();
-          closeLoginModal();
-          enterAdminMode();
-          showToast('✅ Mode admin aktif.');
+
+        if (isBackendConfigured()) {
+          // Sumber kebenaran kata sandi adalah SERVER — mencegah bypass dari console browser.
+          const res = await backendCall('login', { passwordHash: enteredHash });
+          if (res && res.offline) {
+            finishLoginLocally_(enteredHash);
+          } else if (res && res.ok) {
+            clearFailState();
+            sessionPasswordHash = enteredHash;
+            closeLoginModal();
+            enterAdminMode();
+            showToast('✅ Mode admin aktif (tersambung ke server).');
+          } else {
+            el.error.style.display = 'block';
+            el.password.value = '';
+            if (res && res.lockedForMs > 0) {
+              setFailState(ATTEMPTS_BEFORE_LOCK, Date.now() + res.lockedForMs);
+              updateLockUI();
+            } else {
+              el.password.focus();
+            }
+          }
         } else {
-          const until = registerFailedAttempt();
-          el.error.style.display = 'block';
-          el.password.value = '';
-          if (until > 0) { updateLockUI(); } else { el.password.focus(); }
+          finishLoginLocally_(enteredHash);
         }
       } catch (err) {
         console.error('Gagal memverifikasi kata sandi (Web Crypto tidak tersedia).', err);
@@ -1804,9 +1882,25 @@
       }
       try {
         const hash = await sha256Hex(p1);
-        localStorage.setItem(HASH_KEY, hash);
-        closeChangePasswordModal();
-        showToast('🔑 Kata sandi admin berhasil diganti.');
+        if (isBackendConfigured()) {
+          const res = await backendCall('changePassword', { oldHash: sessionPasswordHash, newHash: hash });
+          if (res && res.ok) {
+            localStorage.setItem(HASH_KEY, hash); // salinan lokal, hanya untuk fallback saat offline
+            sessionPasswordHash = hash;
+            closeChangePasswordModal();
+            showToast('🔑 Kata sandi admin berhasil diganti di server.');
+          } else if (res && res.offline) {
+            el.cpError.textContent = 'Tidak dapat menghubungi server. Sambungkan internet lalu coba lagi (kata sandi belum diganti).';
+            el.cpError.style.display = 'block';
+          } else {
+            el.cpError.textContent = (res && res.error) ? res.error : 'Gagal mengganti kata sandi di server.';
+            el.cpError.style.display = 'block';
+          }
+        } else {
+          localStorage.setItem(HASH_KEY, hash);
+          closeChangePasswordModal();
+          showToast('🔑 Kata sandi admin berhasil diganti.');
+        }
       } catch (err) {
         console.error(err);
         el.cpError.textContent = 'Gagal mengganti kata sandi di browser ini.';
@@ -1880,8 +1974,32 @@
       }
     });
 
-    el.btnSave.addEventListener('click', () => {
-      if (saveAll()) showToast('💾 Semua perubahan tersimpan di perangkat ini.');
+    el.btnSave.addEventListener('click', async () => {
+      const localOk = saveAll();
+
+      if (!isBackendConfigured()) {
+        if (localOk) showToast('💾 Semua perubahan tersimpan di perangkat ini.');
+        return;
+      }
+
+      el.btnSave.disabled = true;
+      const payload = {
+        info: infoData, persyaratan: reqData, alur: alurData,
+        tatatertib: tataTertibData, sanksi: sanksiData, faq: faqData
+      };
+      const res = await backendCall('save', { passwordHash: sessionPasswordHash, payload });
+      el.btnSave.disabled = false;
+
+      if (res && res.ok) {
+        showToast('☁️ Tersimpan ke server (Google Sheets) — terlihat oleh semua pengunjung.');
+      } else if (res && res.offline) {
+        showToast(localOk
+          ? '⚠️ Server tidak terjangkau — tersimpan lokal saja, coba lagi saat online.'
+          : '⚠️ Gagal menyimpan (offline & penyimpanan lokal bermasalah).');
+      } else {
+        const reason = (res && res.error) ? res.error : 'sesi admin tidak valid, silakan keluar & login ulang';
+        showToast('⚠️ Gagal menyimpan ke server: ' + reason + (localOk ? ' (tersimpan lokal saja)' : ''));
+      }
     });
     el.btnExit.addEventListener('click', () => { exitAdminMode(); showToast('🚪 Keluar dari mode admin.'); });
 
@@ -1903,8 +2021,30 @@
       }
     });
 
+    // ── Sinkronisasi dari backend (Google Sheets) ──
+    // Dijalankan setelah render awal supaya tampilan tetap instan (pakai cache lokal/bawaan
+    // dulu), lalu diperbarui diam-diam begitu data server tersedia. Tidak pernah menimpa
+    // data saat admin sedang aktif mengedit, dan gagal-diam bila backend belum dikonfigurasi
+    // atau tidak terjangkau (tetap memakai data lokal, tanpa merusak apa pun).
+    async function syncFromBackend() {
+      const remote = await backendFetchData();
+      if (!remote || isAdmin) return;
+      let changed = false;
+      if (isValidReqData(remote.persyaratan))       { reqData = remote.persyaratan; changed = true; }
+      if (isValidFaqData(remote.faq))                { faqData = remote.faq; changed = true; }
+      if (isValidInfoData(remote.info))              { infoData = remote.info; changed = true; }
+      if (isValidAlurData(remote.alur))              { alurData = remote.alur; changed = true; }
+      if (isValidTataTertibData(remote.tatatertib))  { tataTertibData = remote.tatatertib; changed = true; }
+      if (isValidSanksiData(remote.sanksi))          { sanksiData = remote.sanksi; changed = true; }
+      if (changed) {
+        saveAll(); // perbarui cache lokal agar konsisten pada kunjungan berikutnya
+        renderAll();
+      }
+    }
+
     // Render awal (mode publik/non-admin)
     renderAll();
+    syncFromBackend();
 
     // Pulihkan sesi admin bila sebelumnya aktif di tab yang sama, DAN belum idle-timeout
     try {
